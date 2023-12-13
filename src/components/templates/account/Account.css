@@ -1,0 +1,6 @@
+.rowTypeAccount {
+    @apply flex flex-row bg-bgTemplate-light dark:bg-bgTemplate-dark;
+}
+.rowAccount {
+    @apply flex flex-row bg-bgTableRowEven-light dark:bg-bgTableRowEven-dark py-2 border-b border-gray-900;
+}
