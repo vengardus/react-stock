@@ -2,7 +2,11 @@ import styled from "styled-components"
 import { Icon } from "../atomos/Icon"
 
 
-export const BtnSave = ({func, title, bgcolor, icon}) => {
+export const BtnSave = ({
+    func, 
+    title, 
+    bgcolor, 
+    icon}) => {
 
     return (
         <Container type="submit" $bgcolor={bgcolor}>

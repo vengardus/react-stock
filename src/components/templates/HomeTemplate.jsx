@@ -1,59 +1,29 @@
-import styled from "styled-components"
-import { Header } from "../organismos/Header"
-import { useState } from "react"
-
+import { useAuthWithEmailStore } from "../../store/AuthWithEmailStore"
+import { BtnSave } from "../moleculas/BtnSave"
+import { HeaderSecondary } from "../organismos/HeaderSecondary"
 
 export const HomeTemplate = () => {
-    const [state, setState] = useState(false)
+    const signOut = useAuthWithEmailStore((state) => state.signOut)
+
     return (
-        <Container>
-            <header className="header">
-                <Header stateConfig={{
-                    state: state,
-                    setState: () => setState(!state)
-                }} />
+        <div className="containerTemplate">
+            <header className="flex align-middle h-[70px]">
+                <HeaderSecondary />
             </header>
-            <section className="area1">
+
+            <section id="title" className="flex justify-evenly font-black text-xl">
+                <BtnSave 
+                    title={'Cerrar sesión'}
+                    func={signOut}
+                />
             </section>
-            <section className="area2"></section>
-            <section className="main"></section>
-        </Container>
+
+            <section id="resumen" className="">
+            </section>
+
+            <section className="">
+            </section>
+        </div>
     )
 }
 
-const Container = styled.div`
-    min-height: 100vh;
-    padding: 15px;
-    width: 100%;
-    background: ${({ theme }) => theme.bgtotal};
-    color: ${({ theme }) => theme.text};
-    display: grid;
-    grid-template:
-        "header" 100px
-        "area1" 100px
-        "area2" 50px
-        "main" auto;
-
-    .header {
-        grid-area: header;
-        background-color: rgba(103, 93, 241, 0.14);
-        display: flex;
-        align-items: center;
-    }
-    .area1 {
-        grid-area: area1;
-        background-color: rgba(229, 67, 26, 0.14);
-        display: flex;
-        align-items: center;
-    }
-    .area2 {
-        grid-area: area2;
-        background-color: rgba(77, 237, 106, 0.14);
-        display: flex;
-        align-items: center;
-    }
-    .main {
-        grid-area: main;
-        background-color: rgba(179, 46, 241, 0.14);
-    }
-`

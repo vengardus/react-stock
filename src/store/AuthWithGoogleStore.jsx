@@ -3,7 +3,7 @@ import { supabase } from "../supabase/supabase.config";
 import { consoleError } from "../utils/messages";
 
 
-export const useAuthStore = create((set) => ({
+export const useAuthWithGoogleStore = create((set) => ({
     isAuth: false,
 
     signInWithGoogle: async () => {
@@ -19,7 +19,7 @@ export const useAuthStore = create((set) => ({
             return data
         }
         catch (error) {
-            consoleError(error, useAuthStore.name)
+            consoleError(error, useAuthWithGoogleStore.name)
         }
     },
 

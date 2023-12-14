@@ -14,6 +14,10 @@ export const APP_CONFIG = {
     appName: 'My Website',
     appDesc: 'EF2R - Soluciones para tu empresa',
 
+    type_user: {
+      admin: 'admin'
+    },
+
     whatsappData : {
         msgDefault: `Buen día`,
         msgConsult: 'Deseo mas información sobre los productos que ofrecen',

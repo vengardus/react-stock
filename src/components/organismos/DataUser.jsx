@@ -5,11 +5,11 @@ import { BtnCircular } from "../moleculas/BtnCircular";
 import { v } from "../../styles/variables"
 import { ListMenuDesplegable } from "../moleculas/ListMenuDesplegable";
 import { DesplegableUser } from "../../utils/dataEstatica";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthWithEmailStore } from "../../store/AuthWithEmailStore";
 
 export const DataUser = ({ stateConfig }) => {
     const { user } = UserAuth();
-    const { signOut } = useAuthStore();
+    const { signOut } = useAuthWithEmailStore()
 
     const funcionXtipo = async (tipo) => {
         if (tipo.tipo === "cerrarsesion") {

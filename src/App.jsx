@@ -15,7 +15,6 @@ import { useUserStore } from './store/UserStore'
 import { APP_CONFIG } from './utils/dataEstatica'
 import { useUserQuery } from './querys/useUserQuery'
 import { LoginPage } from './pages/login/LoginPage'
-import { useEffect } from 'react'
 
 export const ThemeContext = createContext(null)
 

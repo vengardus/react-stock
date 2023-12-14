@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom"
 import { Navigate } from "react-router-dom"
 
 import { LoginPage } from "../pages/login/LoginPage"
-import { WelcomePage } from "../pages/welcome/WelcomePage"
 import { ConfigPage } from "../pages/config/ConfigPage"
 import { UserAuth } from "../context/AuthContext"
 import { DashboardPage } from "../pages/dashboard/DashboardPage"
@@ -17,16 +16,15 @@ export function MyRoutes() {
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="*" element={<HomePage />} />
+            <Route path="*" element={<LoginPage />} />
             <Route
                 element={<ProtectedRoutes
                     user={user}
                     redirectTO="/login" />}
             >
+                <Route path="/" element={<HomePage />} />
                 <Route path="/config" element={<ConfigPage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/welcome" element={<WelcomePage />} />
                 <Route path="/category" element={<CategoryPage />} />
                 <Route path="/accounts" element={<AccountsPage />} />
             </Route>

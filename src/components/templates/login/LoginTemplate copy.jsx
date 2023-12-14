@@ -1,9 +1,9 @@
 import styled from "styled-components"
 
-import { v } from "../../styles/variables"
-import { BtnSave } from "../moleculas/BtnSave"
+import { v } from "../../../styles/variables"
+import { BtnSave } from "../../moleculas/BtnSave"
 import { useAuthStore } from "../../store/AuthStore"
-import { APP_CONFIG } from "../../utils/dataEstatica"
+import { APP_CONFIG } from "../../../utils/dataEstatica"
 
 
 export const LoginTemplate = () => {

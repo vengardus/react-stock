@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { createContext, useContext } from "react";
 import { supabase } from "../supabase/supabase.config";
-import { UserModel } from "../supabase/user.crud";
+// import { UserModel } from "../supabase/user.crud";
 
 
 const AuthContext = createContext()
@@ -16,8 +16,9 @@ export const AuthContextProvider = ({ children }) => {
                     setUser(null)
                 }
                 else {
+                    console.log('session', session, event)
                     setUser(session.user.user_metadata)
-                    _userInsert(session.user.user_metadata, session.user.id)
+                    //_userInsert(session.user.user_metadata, session.user.id)
                 }
             }
         )
@@ -26,16 +27,16 @@ export const AuthContextProvider = ({ children }) => {
         }
     }, [])
 
-    const _userInsert = async (dataProvider, idAuthSupabase) => {
-        const p = {
-            username: dataProvider.name,
-            photo: dataProvider.picture,
-            idauth_supabase: idAuthSupabase
-        }
-        const oUserModel = new UserModel()
-        if (!await oUserModel.getByField('name', p.username))
-            await oUserModel.insert(p)
-    }
+    // const _userInsert = async (dataProvider, idAuthSupabase) => {
+    //     const p = {
+    //         username: dataProvider.name,
+    //         photo: dataProvider.picture,
+    //         idauth_supabase: idAuthSupabase
+    //     }
+    //     const oUserModel = new UserModel()
+    //     if (!await oUserModel.getByField('name', p.username))
+    //         await oUserModel.insert(p)
+    // }
 
     return <AuthContext.Provider value={{ user }}>
         {children}
