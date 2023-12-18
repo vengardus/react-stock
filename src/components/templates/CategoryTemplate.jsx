@@ -1,9 +1,9 @@
 // import styled from "styled-components"
-import { HeaderSecondary } from "../organismos/HeaderSecondary"
 import { useCategoryStore } from "../../store/CategoryStore"
 import { useQuery } from "@tanstack/react-query"
 import { useTypeAccountStore } from "../../store/TypeAccountStore"
 import { Table } from "../organismos/table/Table"
+import { HeaderGastos } from "../organismos/HeaderGastos"
 
 
 export const CategoryTemplate = () => {
@@ -21,7 +21,7 @@ export const CategoryTemplate = () => {
     return (
         <div className="containerTemplate">
             <header className="h-[70px] flex align-middle border-b">
-                <HeaderSecondary />
+                <HeaderGastos />
             </header>
             <section className="">
                 <div>Categories with Tailwin: {type}</div>

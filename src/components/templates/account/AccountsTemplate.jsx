@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import { HeaderSecondary } from "../../organismos/HeaderSecondary"
 import './Account.css'
 import { v } from "../../../styles/variables"
 import { Table } from "../../organismos/table/Table"
+import { HeaderGastos } from "../../organismos/HeaderGastos"
 
 export const AccountsTemplate = ({
     accountData,
@@ -13,7 +13,7 @@ export const AccountsTemplate = ({
     return (
         <div className="containerTemplate">
             <header className="flex align-middle h-[70px]">
-                <HeaderSecondary />
+                <HeaderGastos />
             </header>
 
             <section id="title" className="flex justify-evenly font-black text-xl">

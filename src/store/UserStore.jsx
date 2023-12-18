@@ -15,20 +15,16 @@ export const useUserStore = create((set) => ({
             //     emailRedirectTo: 'https//example.com/welcome'
             // }
         })
-        if ( error ) {
-            console.log('error', error.message)
-            return null
-        }
+        if ( error ) 
+            return [null, error.message]
 
         const oUser = new UserModel()
         const dataUser = await oUser.insert({
             id_auth: data.user.id,
-            type_user: APP_CONFIG.type_user.admin,
-            email: p.email
+            email: p.email,
+            type_user: APP_CONFIG.type_user.admin
         })
-        if ( oUser.error ) return null
-        return dataUser
-        
+        return [dataUser, oUser.error?? null]        
     },
 
     userGet: async () => {

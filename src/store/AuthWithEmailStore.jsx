@@ -8,13 +8,14 @@ export const useAuthWithEmailStore = create((set) => ({
 
     signInWithEmail: async (p) => {
         try {
+            console.log('p:', p)
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: p.email,
                 password: p.password
             })
 
             if (error) {
-                consoleError('Ocurrió un error durante la autenticación.', useAuthWithEmailStore.name)
+                consoleError('Ocurrió un error durante la autenticación:'+ error.message)
                 return null
             }
 

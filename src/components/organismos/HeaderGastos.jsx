@@ -6,7 +6,7 @@ import { Device } from "../../styles/breakpoints"
 // import { useUserStore } from "../../store/UserStore"
 
 
-export const HeaderSecondary = () => {
+export const HeaderGastos = () => {
     // const dataUser = useUserStore((state) => state.dataUser)
     // const theme = dataUser?.theme ?? APP_CONFIG.theme.light
     // const logo = (theme == APP_CONFIG.theme.light) ? v.logoClientLight : v.logoClientDark

@@ -1,24 +1,25 @@
-import { useAuthWithEmailStore } from "../../store/AuthWithEmailStore"
-import { BtnSave } from "../moleculas/BtnSave"
-import { HeaderSecondary } from "../organismos/HeaderSecondary"
+import { useState } from "react"
+import { Header } from "../organismos/Header"
 
 export const HomeTemplate = () => {
-    const signOut = useAuthWithEmailStore((state) => state.signOut)
+    const [state, setState] = useState(false)
+    
 
     return (
         <div className="containerTemplate">
             <header className="flex align-middle h-[70px]">
-                <HeaderSecondary />
+                <Header
+                    stateConfig={{
+                        state:state, 
+                        setState:()=>setState(!state)
+                    }}
+                />
             </header>
 
-            <section id="title" className="flex justify-evenly font-black text-xl">
-                <BtnSave 
-                    title={'Cerrar sesión'}
-                    func={signOut}
-                />
+            <section id="section1" className="">
             </section>
 
-            <section id="resumen" className="">
+            <section id="section2" className="">
             </section>
 
             <section className="">
