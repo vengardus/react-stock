@@ -60,45 +60,56 @@ Seguir pasos de: [https://tailwindcss.com/docs/guides/vite]
 
 Configurada con proyecto Supabase: gardodb
 
-- Triggers
+## Supabase: Fnctions and Triggers
 
-```plpsql
-create function insert_account() 
-returns trigger
-language plpgsql
-as $$
-begin
-  insert into accounts(id_user) values (new.id);
-  return new;
-end;
-$$;
+  ```plpgsql
+  create or replace function insertPermissions()
+  returns trigger
+  language plpgsql
+  as $$
+  declare item record;
+  begin
+    if new.type_user = 'admin' then
+      insert into inv_companies (name, currency_symbol, id_user_admin) 
+      values ('Genérico', 'S/.', new.id);
+    end if;
+    for item in select id from inv_modules loop
+      if new.type_user = 'admin' then
+        insert into inv_permissions(id_user, id_module) values(new.id, item.id);
+      end if;
+    end loop;
+    return new;
+  end
+  $$;
 
-create trigger account_insert_trigger
-after insert on users
-for each row
-execute function insert_account();
-```
+  create or replace trigger permissionsTrigger 
+  after insert on inv_users
+  for each row 
+  execute function insertPermissions();
+  ```
 
-- functions (rpc)
+  ```plpgsql
+  create or replace function insertDefaultValues()
+  returns trigger
+  language plpgsql
+  as $$
+  declare item record;
+  begin
+    insert into inv_brands (description, id_company) 
+    values ('Genérica', new.id);
+    insert into inv_categories (description, color, id_company) 
+    values ('Genérica', '#FF5722', new.id);
+    insert into inv_user_company (id_user, id_company) 
+    values (new.id_user_admin, new.id) ;
+    return new;
+  end
+  $$;
 
-```sql
-drop function if exists getAccountsGroupByType (int);
-
-create function getAccountsGroupByType (p_id_user int) returns table (
-  balance numeric,
-  type_code varchar,
-  type_id int,
-  type_description varchar
-) language sql as $$
-select SUM(current_balance) as balance, type_account.cod as type_cod, type_account.id as type_id,
-type_account.description as type_description
-from accounts
-inner join type_account on type_account.id = accounts.id_type_account
-where accounts.id_user = p_id_user
-group by type_account.cod, type_account.id
-order by type_account.order
-$$;
-```
+  create or replace trigger defaulValuesTrigger 
+  after insert on inv_companies
+  for each row 
+  execute function insertDefaultValues();
+  ```
 
 ## Ayuda memoria
 
