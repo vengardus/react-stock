@@ -12,7 +12,7 @@ import { InputText } from "./InputText";
 import { BtnSave } from "../../moleculas/BtnSave";
 
 export function RegisterAdmin({ setState }) {
-    const insertUserAdmin = useUserStore((state) => state.insertUserAdmin);
+    const userInsertAdmin = useUserStore((state) => state.insertAdmin);
     const [errorMesage, setMesageError] = useState(null)
 
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ export function RegisterAdmin({ setState }) {
                 password: data.password,
             };
             setMesageError(null)
-            const [, errorMesage] = await insertUserAdmin(p);
+            const [, errorMesage] = await userInsertAdmin(p);
             if (!errorMesage) {
                 navigate("/");
             } else {

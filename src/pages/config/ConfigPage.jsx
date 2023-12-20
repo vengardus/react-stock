@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { ConfigTemplate } from "../../components/templates/ConfigTemplate"
+import { ConfigTemplate } from "../../components/templates/config/ConfigTemplate"
 
 export const ConfigPage = () => {
     return (

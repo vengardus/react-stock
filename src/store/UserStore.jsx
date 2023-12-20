@@ -5,9 +5,9 @@ import { APP_CONFIG } from "../utils/dataEstatica";
 
 
 export const useUserStore = create((set) => ({
-    dataUser: [],
+    data: [],
 
-    insertUserAdmin: async (p) => {
+    insertAdmin: async (p) => {
         const { data, error } = await supabase.auth.signUp({
             email: p.email,
             password: p.password,
@@ -27,14 +27,14 @@ export const useUserStore = create((set) => ({
         return [dataUser, oUser.error?? null]        
     },
 
-    userGet: async () => {
+    get: async () => {
         const oUserModel = new UserModel()
         const data = await oUserModel.get()
         set({ dataUser: data })
         return data ?? []
     },
 
-    userUpdate: async (p) => {
+    update: async (p) => {
         const oUserModel = new UserModel()
         await oUserModel.update(p)
         set((state) => ({ dataUser: state.userGet() }))

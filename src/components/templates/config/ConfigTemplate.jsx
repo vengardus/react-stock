@@ -1,19 +1,18 @@
 import { useState } from "react"
 import styled from "styled-components"
-
-import { v } from "../../styles/variables"
-import { APP_CONFIG, TemasData } from "../../utils/dataEstatica"
-import { Header } from "../organismos/Header"
-import { Selector } from "../organismos/Selector"
-import { ListCountry } from "../organismos/ListCountry"
-import { CardEliminarData } from "../organismos/CardEliminarData"
-import { ListGeneric } from "../moleculas/ListGeneric"
-import { BtnSave } from "../moleculas/BtnSave"
-import { useUserStore } from "../../store/UserStore"
+import { v } from "../../../styles/variables"
+import { useUserStore } from "../../../store/UserStore"
+import { APP_CONFIG, TemasData } from "../../../utils/dataEstatica"
+import { Header } from "../../organismos/Header"
+import { Selector } from "../../organismos/Selector"
+import { ListCountry } from "../../organismos/ListCountry"
+import { ListGeneric } from "../../moleculas/ListGeneric"
+import { BtnSave } from "../../moleculas/BtnSave"
+import { CardEliminarData } from "../../organismos/CardEliminarData"
 
 
 export const ConfigTemplate = () => {
-    const { dataUser, userUpdate } = useUserStore()
+    const { data:dataUser, update:userUpdate } = useUserStore()
     const [state, setState] = useState(false)
     const [stateCountries, setStateCountries] = useState(false)
     const [stateThemes, setStateThemes] = useState(false)

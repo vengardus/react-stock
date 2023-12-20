@@ -5,14 +5,19 @@ import { Navigate } from "react-router-dom"
 import { LoginPage } from "../pages/login/LoginPage"
 import { ConfigPage } from "../pages/config/ConfigPage"
 import { UserAuth } from "../context/AuthContext"
-import { DashboardPage } from "../pages/dashboard/DashboardPage"
 import { HomePage } from "../pages/home/HomePage"
-import { CategoryPage } from "../pages/category/CategoryPage"
-import { AccountsPage } from "../pages/account/AccountsPage"
+import { SpinnerLoader } from "../components/moleculas/SpinnerLoader"
+import { Error } from "../components/moleculas/Error"
+import { useInitLoadQuery } from "../querys/useInitLoadQuery"
 
 
 export function MyRoutes() {
     const { user } = UserAuth()
+    const { isLoading, error } = useInitLoadQuery()
+
+    if (isLoading) return <SpinnerLoader />
+    if ( error ) return <Error />
+
     return (
         <Routes>
             <Route path="/login" element={<LoginPage />} />
@@ -24,9 +29,6 @@ export function MyRoutes() {
             >
                 <Route path="/" element={<HomePage />} />
                 <Route path="/config" element={<ConfigPage />} />
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/category" element={<CategoryPage />} />
-                <Route path="/accounts" element={<AccountsPage />} />
             </Route>
         </Routes>
 

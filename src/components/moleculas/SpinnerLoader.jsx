@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { HashLoader } from "react-spinners";
+//import { HashLoader } from "react-spinners";
+import { PacmanLoader } from "react-spinners";
 
 //import { useOperations } from "../../store/OperationsStore";
 
@@ -8,7 +9,7 @@ export function SpinnerLoader() {
   //const { colorCategory } = useOperations();
   return (
     <Container>
-      <HashLoader color={"green"} size={200}/>
+      <PacmanLoader color={"#d69136"} size={25}/>
     </Container>
   );
 }
@@ -23,7 +24,7 @@ const Container = styled.div`
   top: 0;
   left: 0;
   z-index: 1000;
-  background-color: ${(props)=>props.theme.bg};
+  background-color: ${(props)=>props.theme.bg4};
   transform: all 0.3s;
 
 

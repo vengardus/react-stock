@@ -1,14 +1,7 @@
-import { HomeTemplate } from "../../components/templates/HomeTemplate"
+import { HomeTemplate } from "../../components/templates/home/HomeTemplate"
 
 export const HomePage = () => {
   return (
-    <>
-    
-    <h1 className="text-3xl text-red-300 font-bold underline">
-      Hello world!
-    </h1>
-
     <HomeTemplate />
-    </>
   )
 }

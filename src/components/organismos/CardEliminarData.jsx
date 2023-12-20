@@ -3,13 +3,11 @@ import Swal from "sweetalert2"
 
 import { v } from "../../styles/variables"
 import { BtnSave } from "../moleculas/BtnSave"
-//import { useCategoryStore } from "../store/CategoryStore"
 import { useUserStore } from "../../store/UserStore"
 
 
 export const CardEliminarData = () => {
-    // const { categoryDeleteAll } = useCategoryStore()
-    const { dataUser } = useUserStore()
+    const { data:dataUser } = useUserStore()
 
     const deleteAllCategory = async () => {
         Swal.fire({

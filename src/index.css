@@ -27,7 +27,7 @@ body::-webkit-scrollbar {
     .containerTemplate {
         @apply flex flex-col w-full h-screen px-1 gap-y-2
           text-textTemplate-light dark:text-textTemplate-dark
-          bg-bgTemplate-light dark:bg-bgTemplate-dark;
+          bg-bgTemplate-light dark:bg-bgTemplate-dark overflow-hidden px-2 ;
     }
 }
 /***/
@@ -67,6 +67,14 @@ body::-webkit-scrollbar {
     .tableStriped {
         @apply odd:bg-bgTableRowOdd-light odd:dark:bg-bgTableRowOdd-dark
           even:bg-bgTableRowEven-light even:dark:bg-bgTableRowEven-dark;
+    }
+}
+/***/
+
+/* Component various */
+@layer components {
+    .title {
+        @apply font-bold text-[30px];
     }
 }
 /***/
