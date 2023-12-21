@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export const useInitLoadQuery = () => {
     const userGet = useUserStore((state) => state.get)
-    const companyGetAllByUser = useCompanyStore((state) => state.getAllByUser)
+    const companyGetByUser = useCompanyStore((state) => state.getByUser)
 
     const {data:dataUser, isLoading, error}=  useQuery({
         queryKey:['userGet'],
@@ -13,7 +13,7 @@ export const useInitLoadQuery = () => {
 
     useQuery({
         queryKey: ['getAllByUser'],
-        queryFn: () => companyGetAllByUser({
+        queryFn: () => companyGetByUser({
             id_user: dataUser.id
         }),
         enabled:!!dataUser

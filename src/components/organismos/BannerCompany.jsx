@@ -4,7 +4,7 @@ import { CardCompany } from "../moleculas/CardCompany"
 export const BannerCompany = ({
     companyName,
     currencySymbol,
-    countUsers=7
+    countUsersCompany
 }) => {
 
     return (
@@ -22,7 +22,7 @@ export const BannerCompany = ({
                 />
                 <CardCompany
                     title={'Usuarios'}
-                    value={countUsers}
+                    value={countUsersCompany}
                 />
             </div>
         </div>

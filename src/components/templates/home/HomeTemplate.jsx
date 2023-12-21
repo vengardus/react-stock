@@ -7,6 +7,7 @@ import { useCompanyStore } from "../../../store/CompanyStore"
 export const HomeTemplate = () => {
     const [state, setState] = useState(false)
     const dataCompany = useCompanyStore((state) => state.data)
+    const countUsersCompany = useCompanyStore((state) => state.countUsersCompany)
 
     return (
         <div className="containerTemplate">
@@ -25,8 +26,9 @@ export const HomeTemplate = () => {
 
             <section className="h-screen w-100">
                 <BannerCompany
-                    companyName={dataCompany?.inv_companies?.name}
-                    currencySymbol={dataCompany?.inv_companies?.currency_symbol}
+                    companyName={dataCompany?.name}
+                    currencySymbol={dataCompany?.currency_symbol}
+                    countUsersCompany={countUsersCompany}
                 />
             </section>
         </div>
