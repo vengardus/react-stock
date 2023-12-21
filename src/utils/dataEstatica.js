@@ -181,7 +181,7 @@ export const DataModulosConfiguracion =[
       title:"Marca de productos",
       subtitle:"gestiona tus marcas",
       icono:"https://i.ibb.co/1qsbCRb/piensa-fuera-de-la-caja.png",
-      link:"/configurar/marca",
+      link:"/config/brand",
      
     },
   
