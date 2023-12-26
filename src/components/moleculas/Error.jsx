@@ -1,5 +1,5 @@
-export const Error = () => {
+export const Error = ({message='Ocurrió un error'}) => {
   return (
-    <div>Error</div>
+    <div>{message}</div>
   )
 }

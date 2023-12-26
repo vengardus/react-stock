@@ -6,12 +6,11 @@ export class SupabaseCrud {
         this.TABLE_NAME = table_name;
         this.message = "";
         this.error = false;
+        this.supabase = supabase;
     }
 
     async getAll() {
-        const { data, error } = await supabase
-            .from(this.TABLE_NAME)
-            .select()
+        const { data, error } = await supabase.from(this.TABLE_NAME).select();
         this.error = error != null;
         if (this.error) {
             this.message = error.message;
@@ -70,5 +69,39 @@ export class SupabaseCrud {
                 `${SupabaseCrud.name}.${this.update.name}.${this.TABLE_NAME}: ${error.message}`
             );
         }
+        return error? false : true
+    }
+
+    async delete(p) {
+        const { error } = await supabase
+            .from(this.TABLE_NAME)
+            .delete(p)
+            .eq("id", p.id);
+
+        this.error = error != null;
+        if (this.error) {
+            this.message = error.message;
+            consoleError(
+                `${SupabaseCrud.name}.${this.delete.name}.${this.TABLE_NAME}: ${error.message}`
+            );
+        }
+        return error? false : true
+    }
+
+    async filter(fieldName, value) {
+        const { data, error } = await supabase
+            .from(this.TABLE_NAME)
+            .select()
+            .ilike(fieldName, "%" + value + "%");
+
+        this.error = error != null;
+        if (this.error) {
+            this.message = error.message;
+            consoleError(
+                `${SupabaseCrud.name}.${this.filter.name}.${this.TABLE_NAME}: ${error.message}`
+            );
+        }
+
+        return data
     }
 }

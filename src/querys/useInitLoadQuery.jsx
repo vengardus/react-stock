@@ -6,18 +6,19 @@ export const useInitLoadQuery = () => {
     const userGet = useUserStore((state) => state.get)
     const companyGetByUser = useCompanyStore((state) => state.getByUser)
 
-    const {data:dataUser, isLoading, error}=  useQuery({
+    const queryUser =  useQuery({
         queryKey:['userGet'],
         queryFn: userGet
     })
 
     useQuery({
-        queryKey: ['getAllByUser'],
+        queryKey: ['getCompanyByUser', queryUser.data?.id], 
         queryFn: () => companyGetByUser({
-            id_user: dataUser.id
+            id_user: queryUser.data?.id
         }),
-        enabled:!!dataUser
+        enabled: queryUser.data?.id != null
     })
 
-    return {dataUser, isLoading, error}
+    return {isLoading:queryUser.isLoading, isError:queryUser.isError }
+    // return queryUser
 }

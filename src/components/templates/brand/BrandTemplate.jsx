@@ -1,8 +1,11 @@
 import { useState } from "react"
 import { Header } from "../../organismos/Header"
+import { TableBrand } from "../../organismos/table/TableBrand"
 
 
-export const BrandTemplate = () => {
+export const BrandTemplate = ({
+    brands
+}) => {
     const [state, setState] = useState(false)
 
     return (
@@ -17,9 +20,17 @@ export const BrandTemplate = () => {
             </header>
 
             <section id="section1" className="">
+                {
+                    brands?.map(item => (
+                        <div key={item.id}>{item.description}</div>
+                    ))
+                }
             </section>
 
             <section id="section2" className="">
+                <TableBrand 
+                    data={brands?? []}
+                />
             </section>
 
             <section className="">

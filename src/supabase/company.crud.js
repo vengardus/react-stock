@@ -26,7 +26,7 @@ export class CompanyModel extends SupabaseCrud {
     }
 
     async getCountUserByCompany(p) {
-        const { data, error } = await supabase.rpc("getcountusersbycompany", {
+        const { data, error } = await supabase.rpc("get_count_users_by_company", {
             p_id_company: p.id_company,
         });
 
