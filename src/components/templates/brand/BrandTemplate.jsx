@@ -1,39 +1,74 @@
 import { useState } from "react"
 import { Header } from "../../organismos/Header"
 import { TableBrand } from "../../organismos/table/TableBrand"
+import { RegisterBrand } from "../../organismos/form/RegisterBrand"
+import { ContentFilter } from "../../atomos/ContentFilter"
+import { BtnFilter } from "../../moleculas/BtnFilter"
+import { v } from "../../../styles/variables"
+import { Searcher } from "../../organismos/Searcher"
+import { useBrandStore } from "../../../store/BrandStore"
 
 
 export const BrandTemplate = ({
     brands
 }) => {
     const [state, setState] = useState(false)
+    const [dataSelect, setDataSelect] = useState([])
+    const [action, setAction] = useState("")
+    const [openRegister, setOpenRegister] = useState(false)
+    const setStrSearch = useBrandStore((state) => state.setStrSearch)
+
+    const actionRegister = (action, data = []) => {
+        setAction(action)
+        setDataSelect(data)
+        setOpenRegister(!openRegister)
+    }
 
     return (
         <div className="containerTemplate">
             <header className="flex align-middle h-[70px]">
                 <Header
                     stateConfig={{
-                        state:state, 
-                        setState:()=>setState(!state)
+                        state: state,
+                        setState: () => setState(!state)
                     }}
                 />
             </header>
 
-            <section id="section1" className="">
-                {
-                    brands?.map(item => (
-                        <div key={item.id}>{item.description}</div>
-                    ))
-                }
+            <section id="sectionTitle" className="">
+                <ContentFilter >
+                    <div className="title">Marcas</div>
+                    <BtnFilter
+                        bgColor={'#f6f3f3'}
+                        textColor={'#353535'}
+                        icon={<v.agregar />}
+                        func={(action, data) => actionRegister(action, data)}
+                    />
+                </ContentFilter>
             </section>
 
-            <section id="section2" className="">
-                <TableBrand 
-                    data={brands?? []}
+            <section className="sectionSearcher flex justify-end  ">
+                <Searcher 
+                    setSearcher={setStrSearch}
+                />
+            </section>
+
+            <section id="sectionTable" className="px-2 flex flex-col gap-y-3">
+                <TableBrand
+                    data={brands ?? []}
+                    actionRegister={(action, data) => actionRegister(action, data)}
                 />
             </section>
 
             <section className="">
+                {
+                    openRegister && <RegisterBrand
+                        dataSelect={dataSelect}
+                        action={action}
+                        onClose={() => setOpenRegister(!openRegister)}
+                    />
+                }
+
             </section>
         </div>
     )

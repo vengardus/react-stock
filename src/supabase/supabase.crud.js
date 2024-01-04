@@ -69,23 +69,31 @@ export class SupabaseCrud {
                 `${SupabaseCrud.name}.${this.update.name}.${this.TABLE_NAME}: ${error.message}`
             );
         }
-        return error? false : true
+        return !this.error
     }
 
     async delete(p) {
-        const { error } = await supabase
-            .from(this.TABLE_NAME)
-            .delete(p)
-            .eq("id", p.id);
-
-        this.error = error != null;
-        if (this.error) {
-            this.message = error.message;
-            consoleError(
-                `${SupabaseCrud.name}.${this.delete.name}.${this.TABLE_NAME}: ${error.message}`
-            );
+        try {
+            const { data, error } = await supabase
+                .from(this.TABLE_NAME)
+                .delete()
+                .eq("id", p.id)
+                .single()
+            console.log('supa error', error)
+            console.log('supa data', data)
+            this.error = error != null;
+            if (this.error) {
+                this.message = error.message;
+                consoleError(
+                    `${SupabaseCrud.name}.${this.delete.name}.${this.TABLE_NAME}: ${error.message}`
+                );
+            }
+            return !this.error
         }
-        return error? false : true
+        catch(error) {
+            consoleError('Error delete', error.error_description || error.message );
+            return false
+        }
     }
 
     async filter(fieldName, value) {

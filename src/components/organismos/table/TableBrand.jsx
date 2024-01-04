@@ -19,17 +19,44 @@ import {
     // FilterFns,
 } from "@tanstack/react-table"
 import { ContentActionsTable } from "./ContentActionsTable"
-
-
+import { modalAlert } from "../../../utils/modalAlert"
+import { useBrandStore } from "../../../store/BrandStore"
+import { APP_CONFIG } from "../../../utils/dataEstatica"
+import { FaArrowsAltV } from "react-icons/fa"
+import { Pagination } from "./Pagination"
+import { useState } from "react"
 export const TableBrand = ({
-    data
+
+    data,
+    actionRegister,
+    isStriped = true
 }) => {
-    const editIten = (parm) => {
-        console.log('edit',parm)
+    const [page, setPage] = useState(1)
+    const deleteBrand = useBrandStore((state) => state.delete)
+
+    const editIten = (item) => {
+        if (item.description.trim() == APP_CONFIG.genericDescription) {
+            modalAlert({ type: 'warning', text: 'No se puede editar marca genérica.' })
+            return
+        }
+        actionRegister(APP_CONFIG.actionCrud.update, item)
     }
 
-    const deleteItem = () => {
-        console.log('delete')
+    const deleteItem = (item) => {
+        if (item.description.trim() == APP_CONFIG.genericDescription) {
+            modalAlert({ type: 'warning', text: 'No se puede eliminar marca genérica.' })
+            return
+        }
+
+        modalAlert({ type: 'delete' })
+            .then(async (result) => {
+                if (result.isConfirmed) {
+                    if (await deleteBrand({ id: item.id }))
+                        modalAlert({ type: 'infoTimer', text: 'Se eliminó registro.' })
+                    else
+                        modalAlert({ type: 'warning', text: 'Error al eliminar registro.' })
+                }
+            });
     }
 
     const columns = [
@@ -41,6 +68,7 @@ export const TableBrand = ({
         {
             accessorKey: "actions",
             header: "Acciones",
+            enableSorting: false,
             cell: (info) => <ContentActionsTable
                 funcEdit={() => editIten(info.row.original)}
                 funcDelete={() => deleteItem(info.row.original)}
@@ -51,48 +79,81 @@ export const TableBrand = ({
     const table = useReactTable({
         data,
         columns,
+        initialState: {
+            pagination: {
+                pageSize: 7,
+            },
+        },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     })
 
-
+    table.setPageSize = 5
 
     return (
-        <div>
-            <table>
-                <thead>
-                    {
-                        table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
-                                {
-                                    headerGroup.headers.map(header => (
-                                        <th key={header.id}>{header.column.columnDef.header}</th>
-                                    ))
-                                }
-                            </tr>
-                        ))
-                    }
-                </thead>
-                <tbody>
-                    {
-                        table.getRowModel().rows.map(item => (
-                            <tr key={item.id}>
-                                {
-                                    item.getVisibleCells().map(cell => (
-                                        <td key={cell.id}>
-                                            {
-                                                flexRender(cell.column.columnDef.cell, cell.getContext())
-                                            }
-                                        </td>
-                                    ))
-                                }
-                            </tr>
-                        ))
-                    }
-                </tbody>
-            </table>
-        </div>
+        <>
+            <div className="tableContainer">
+                <table className="">
+                    <thead>
+                        {
+                            table.getHeaderGroups().map(headerGroup => (
+                                <tr key={headerGroup.id}>
+                                    {
+                                        headerGroup.headers.map(header => (
+                                            <th key={header.id} className="">
+                                                <span className="flex">
+                                                    {header.column.columnDef.header}
+                                                    {header.column.getCanSort() && (
+                                                        <span
+                                                            style={{ cursor: 'pointer' }}
+                                                            onClick={header.column.getToggleSortingHandler()}
+                                                        >
+                                                            <FaArrowsAltV />
+                                                        </span>
+                                                    )}
+                                                    {
+                                                        {
+                                                            asc: '🔼',
+                                                            desc: '🔽'
+                                                        }[header.column.getIsSorted()]
+                                                    }
+                                                </span>
+                                            </th>
+                                        ))
+                                    }
+                                </tr>
+                            ))
+                        }
+                    </thead>
+                    <tbody>
+                        {
+                            table.getRowModel().rows.map(item => (
+                                <tr key={item.id} className={`${(isStriped) ? 'tableStriped' : ''}`} >
+                                    {
+                                        item.getVisibleCells().map(cell => (
+                                            <th key={cell.id} scope='row'>
+                                                {
+                                                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                                                }
+                                            </th>
+                                        ))
+                                    }
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <Pagination
+                table={table}
+                goBegin={() => table.setPageIndex(0)}
+                page={table.getState().pagination.pageIndex + 1}
+                setPage={setPage}
+                pageCount={table.getPageCount()}
+            />
+        </>
     )
 }

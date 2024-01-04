@@ -14,15 +14,19 @@ export class BrandModel extends SupabaseCrud {
 
     async insert(p) {
         const { error } = await this.supabase.rpc("insert_brand", p);
-        if (this.error)
+        if (error) {
+            this.error = true
+            this.message = error.message
             Swal.fire({
                 //position: "top-end",
                 icon: "error",
                 title: "Oops",
                 text: `Error al insertar usuario: ${error.message}`,
-                showConfirmButton: false,
-                timer: 1500,
+                //showConfirmButton: false,
+                //timer: 1700,
             });
+        }
+            
         return error? false : true;
     }
 

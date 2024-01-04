@@ -18,6 +18,8 @@ export const APP_CONFIG = {
       admin: 'admin'
     },
 
+    genericDescription : 'Genérica',
+
     whatsappData : {
         msgDefault: `Buen día`,
         msgConsult: 'Deseo mas información sobre los productos que ofrecen',

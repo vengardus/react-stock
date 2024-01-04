@@ -7,9 +7,10 @@ import { Error } from "../../components/moleculas/Error"
 
 export const BrandPage = () => {
   const company = useCompanyStore((state) => state.data)
+  const dataBrand = useBrandStore((state)=>state.data)
   const getAll = useBrandStore((state) => state.getAll)
-  // const filter = useBrandStore((state) => state.filter)
-  // const strSearch = useBrandStore((state) => state.strSearch)
+  const filter = useBrandStore((state) => state.filter)
+  const strSearch = useBrandStore((state) => state.strSearch)
 
   const queryBrand = useQuery({
     queryKey: ['getAllBrands', company?.id],
@@ -19,18 +20,18 @@ export const BrandPage = () => {
     enabled: company?.id != null
   })
 
-  // const queryFilter = useQuery({
-  //   queryKey: ['filterBrands'],
-  //   queryFn: () =>filter({
-  //     id_company: company.id,
-  //     description: strSearch
-  //   })
-  // })
+  useQuery({
+      queryKey: ['filterBrands', company?.id, strSearch],
+    queryFn: () =>filter({
+      id_company: company.id,
+      description: strSearch
+    })
+  })
 
   if (queryBrand.isLoading) return <SpinnerLoader />
   if (queryBrand.isError) return <Error />
 
   return (
-    <BrandTemplate brands={queryBrand.data} />
+    <BrandTemplate brands={dataBrand} />
   )
 }
