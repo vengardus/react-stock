@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useBrandStore } from "../../../store/BrandStore";
+import { useCategoryStore } from "../../../store/CategoryStore";
 import { useCompanyStore } from "../../../store/CompanyStore";
 import { APP_CONFIG } from "../../../utils/dataEstatica";
 import { InputText } from "./InputText";
@@ -9,16 +9,17 @@ import { BtnSave } from "../../moleculas/BtnSave";
 import { v } from "../../../styles/variables";
 import { convertirCapitalize } from "../../../utils/conversiones";
 import { modalAlert } from "../../../utils/modalAlert";
+import { CirclePicker} from "react-color"
+import { useState } from "react";
 
-
-export function RegisterBrand({
+export function RegisterCategory({
     onClose,
     dataSelect,
     action
 }) {
-
-    const insertBrand = useBrandStore((state) => state.insert)
-    const updateBrand = useBrandStore((state) => state.update)
+    const [color, setColor] = useState('#F44336')
+    const insertCategory = useCategoryStore((state) => state.insert)
+    const updateCategory = useCategoryStore((state) => state.update)
     const dataCompany = useCompanyStore((state) => state.data)
     const {
         register,
@@ -27,34 +28,42 @@ export function RegisterBrand({
         setFocus
     } = useForm();
 
-    async function registerBrand(data) {
+    const handleOnChangeColor = (color) => {
+        setColor(color.hex)
+    }
+
+    async function registerCategory(data) {
         if (action === APP_CONFIG.actionCrud.update) {
             const p = {
                 id: dataSelect.id,
                 description: convertirCapitalize(data.description),
+                color: color
             };
-            const error = await updateBrand(p)
+            const error = await updateCategory(p)
             if (error)
                 modalAlert({
                     type: 'warning',
-                    text: `No se actualizó la marca (${error})`
+                    text: `No se actualizó la categoría (${error})`
                 })
             onClose();
         } else {
             const p = {
                 p_description: convertirCapitalize(data.description),
                 p_id_company: dataCompany.id,
+                p_color: color
             };
-            await insertBrand(p)
+            await insertCategory(p)
             onClose();
         }
     }
 
     useEffect(() => {
-        // if (action === APP_CONFIG.actionCrud.update) {
-        // }
+        if (action === APP_CONFIG.actionCrud.update) {
+            console.log(dataSelect)
+            setColor(dataSelect.color)
+        }
         setFocus('description')
-    }, [setFocus]);
+    }, [setFocus, action, dataSelect]);
 
     return (
         <Container>
@@ -62,7 +71,7 @@ export function RegisterBrand({
                 <div className="headers">
                     <section>
                         <h1>
-                            {action == APP_CONFIG.actionCrud.update ? "Editar marca" : "Registrar nueva marca"}
+                            {action == APP_CONFIG.actionCrud.update ? "Editar categoría" : "Registrar nueva categoría"}
                         </h1>
                     </section>
 
@@ -71,10 +80,10 @@ export function RegisterBrand({
                     </section>
                 </div>
 
-                <form className="formulario" onSubmit={handleSubmit(registerBrand)}>
+                <form className="formulario" onSubmit={handleSubmit(registerCategory)}>
                     <section>
                         <article>
-                            <InputText icono={<v.iconomarca />}>
+                            <InputText icono={<v.iconocategorias />}>
                                 <input
                                     className="form__field"
                                     defaultValue={dataSelect.description}
@@ -84,9 +93,16 @@ export function RegisterBrand({
                                         required: true,
                                     })}
                                 />
-                                <label className="form__label">marca</label>
+                                <label className="form__label">categoría</label>
                                 {errors.nombre?.type === "required" && <p>Campo requerido</p>}
                             </InputText>
+                        </article>
+
+                        <article>
+                          <CirclePicker 
+                            onChange={handleOnChangeColor}
+                            color={color}
+                          />
                         </article>
 
                         <div className="btnguardarContent">
@@ -103,7 +119,7 @@ export function RegisterBrand({
     );
 }
 const Container = styled.div`
-  transition: 0.5s;
+  /* transition: 0.5s; */
   top: 0;
   left: 0;
   position: fixed;
@@ -155,30 +171,3 @@ const Container = styled.div`
   }
 `;
 
-// const ContentTitle = styled.div`
-//   display: flex;
-//   justify-content: start;
-//   align-items: center;
-//   gap: 20px;
-//   svg {
-//     font-size: 25px;
-//   }
-//   input {
-//     border: none;
-//     outline: none;
-//     background: transparent;
-//     padding: 2px;
-//     width: 40px;
-//     font-size: 28px;
-//   }
-// `;
-// const ContainerEmojiPicker = styled.div`
-//   position: absolute;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   top: 0;
-//   left: 0;
-//   bottom: 0;
-//   right: 0;
-// `;

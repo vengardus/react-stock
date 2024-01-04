@@ -176,7 +176,7 @@ export const DataModulosConfiguracion =[
       title:"Categoria de productos",
       subtitle:"asigna categorias a tus productos",
       icono:"https://i.ibb.co/VYbMRLZ/categoria.png",
-      link:"/configurar/categorias",
+      link:"/config/category",
       
     },
     {

@@ -62,7 +62,7 @@ Configurada con proyecto Supabase: gardodb
 
 ## Supabase: Fnctions and Triggers
 
-  ```plpgsql
+  ```plpgsql: function insertPermissions()
   create or replace function insertPermissions()
   returns trigger
   language plpgsql
@@ -88,7 +88,7 @@ Configurada con proyecto Supabase: gardodb
   execute function insertPermissions();
   ```
 
-  ```plpgsql
+  ```plpgsql: function insertDefaultValues()
   create or replace function insertDefaultValues()
   returns trigger
   language plpgsql
@@ -109,6 +109,72 @@ Configurada con proyecto Supabase: gardodb
   after insert on inv_companies
   for each row 
   execute function insertDefaultValues();
+  ```
+
+  ```plpgsql: alter tables
+  /* Alter tables */
+
+  /* inv_brands: constraint unique*/
+  ALTER TABLE inv_brands
+    ADD CONSTRAINT inv_brands_unique_description_company UNIQUE (description, id_company);
+
+  /* inv_brands: idx */
+  create index inV_brands_idx_description_company on inv_brands (description, id_company);
+
+  /* inv_categories: constraint unique*/
+  ALTER TABLE inv_categories
+    ADD CONSTRAINT inv_categories_unique_description_company UNIQUE (description, id_company);
+
+  /* inv_brands: idx */
+  create index inV_categories_idx_description_company on inv_categories (description, id_company);
+  ```
+  
+  ```plpgsql: function insert_brand
+  CREATE OR REPLACE FUNCTION insert_brand(p_description VARCHAR, p_id_company INT)
+  RETURNS VOID AS $$
+  BEGIN
+      -- Verificar si la combinación description + id_company ya existe
+      PERFORM 1
+      FROM inv_brands
+      WHERE description = p_description AND id_company = p_id_company;
+
+      -- Si no existe, insertar el nuevo registro
+      IF NOT FOUND THEN
+          INSERT INTO inv_brands(description, id_company)
+          VALUES (p_description, p_id_company);
+          RAISE NOTICE 'Registro insertado correctamente.';
+      ELSE
+          RAISE EXCEPTION 'La marca ya existe.';
+      END IF;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  // return example
+  SELECT insert_brand('Ejemplo Descripción 2', 4);
+  ```
+
+  ```plpgsql: function insert_category
+  CREATE OR REPLACE FUNCTION insert_category(p_description VARCHAR, p_id_company INT, p_color VARCHAR)
+  RETURNS VOID AS $$
+  BEGIN
+      -- Verificar si la combinación description + id_company ya existe
+      PERFORM 1
+      FROM inv_categories
+      WHERE description = p_description AND id_company = p_id_company;
+
+      -- Si no existe, insertar el nuevo registro
+      IF NOT FOUND THEN
+          INSERT INTO inv_categories(description, id_company, color)
+          VALUES (p_description, p_id_company, p_color);
+          RAISE NOTICE 'Registro insertado correctamente.';
+      ELSE
+          RAISE EXCEPTION 'La categoría ya existe.';
+      END IF;
+  END;
+  $$ LANGUAGE plpgsql;
+
+  // return example
+  SELECT insert_category('Categoría 3', 4, '#C44452');
   ```
 
 ## Ayuda memoria
