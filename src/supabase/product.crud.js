@@ -2,18 +2,20 @@ import Swal from "sweetalert2";
 import { SupabaseCrud } from "./supabase.crud";
 import { consoleError } from "../utils/messages";
 
-export class BrandModel extends SupabaseCrud {
+export class ProductModel extends SupabaseCrud {
     constructor() {
-        super("inv_brands");
+        super("inv_products");
     }
 
     async getAll(p) {
-        const data = await this.getByField('id_company', p.id_company)
+        // const data = await this.getByField('id_company', p.id_company)
+        const { data } = await this.supabase.rpc("get_all_products", p);
         return data
     }
 
     async insert(p) {
-        const { error } = await this.supabase.rpc("insert_brand", p);
+        console.log('insert', p)
+        const { error } = await this.supabase.rpc("insert_product", p);
         if (error) {
             this.error = true
             this.message = error.message
@@ -21,7 +23,7 @@ export class BrandModel extends SupabaseCrud {
                 //position: "top-end",
                 icon: "error",
                 title: "Oops",
-                text: `Error al insertar marca: ${error.message}`,
+                text: `Error al insertar producto: ${error.message}`,
                 //showConfirmButton: false,
                 //timer: 1700,
             });
@@ -41,7 +43,7 @@ export class BrandModel extends SupabaseCrud {
         if (this.error) {
             this.message = error.message;
             consoleError(
-                `${BrandModel.name}.${this.filter.name}.${this.TABLE_NAME}: ${error.message}`
+                `${ProductModel.name}.${this.filter.name}.${this.TABLE_NAME}: ${error.message}`
             );
         }
 

@@ -27,7 +27,7 @@ export function RegisterBrand({
         setFocus
     } = useForm();
 
-    async function registerBrand(data) {
+    const registerBrand = async (data) => {
         if (action === APP_CONFIG.actionCrud.update) {
             const p = {
                 id: dataSelect.id,

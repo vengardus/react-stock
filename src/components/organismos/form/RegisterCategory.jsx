@@ -32,7 +32,7 @@ export function RegisterCategory({
         setColor(color.hex)
     }
 
-    async function registerCategory(data) {
+    const registerCategory = async(data) => {
         if (action === APP_CONFIG.actionCrud.update) {
             const p = {
                 id: dataSelect.id,
@@ -94,7 +94,7 @@ export function RegisterCategory({
                                     })}
                                 />
                                 <label className="form__label">categoría</label>
-                                {errors.nombre?.type === "required" && <p>Campo requerido</p>}
+                                {errors.description?.type === "required" && <p>Campo requerido</p>}
                             </InputText>
                         </article>
 

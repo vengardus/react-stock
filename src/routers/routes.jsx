@@ -11,6 +11,7 @@ import { Error } from "../components/moleculas/Error"
 import { useInitLoadQuery } from "../querys/useInitLoadQuery"
 import { BrandPage } from "../pages/brand/BrandPage"
 import { CategoryPage } from "../pages/category/CategoryPage"
+import { ProductPage } from "../pages/product/ProductPage"
 
 
 export function MyRoutes() {
@@ -33,6 +34,7 @@ export function MyRoutes() {
                 <Route path="/config" element={<ConfigPage />} />
                 <Route path="/config/brand" element={<BrandPage />} />
                 <Route path="/config/category" element={<CategoryPage />} />
+                <Route path="/config/product" element={<ProductPage />} />
             </Route>
         </Routes>
 

@@ -21,7 +21,7 @@ export class CategoryModel extends SupabaseCrud {
                 //position: "top-end",
                 icon: "error",
                 title: "Oops",
-                text: `Error al insertar usuario: ${error.message}`,
+                text: `Error al insertar categoría: ${error.message}`,
                 //showConfirmButton: false,
                 //timer: 1700,
             });

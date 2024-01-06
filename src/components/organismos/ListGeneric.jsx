@@ -3,7 +3,12 @@ import { Device } from "../../styles/breakpoints"
 import { BtnClose } from "../atomos/BtnClose"
 
 
-export const ListGeneric = ({ data, setState, func, bottom, scroll }) => {
+export const ListGeneric = ({ 
+    data, 
+    setState, 
+    func, 
+    bottom, 
+    scroll }) => {
     const selectItem = (p) => {
         //console.log('item', p)
         func(p)
@@ -21,7 +26,7 @@ export const ListGeneric = ({ data, setState, func, bottom, scroll }) => {
                     data.map((item, index) => {
                         return (
                             <ItemContainer key={index} onClick={() => selectItem(item)}>
-                                <span>{item.icon}</span>
+                                <span>💎</span>
                                 <span>{item.description}</span>
                             </ItemContainer>
                         )
@@ -46,17 +51,20 @@ const Container = styled.div`
     border-radius: 10px;
     gap: 10px;
     z-index:3;
+    height: 230px;
     /* background-color: orange; */
+    align-content: start;
     flex-wrap: wrap;
     @media ${() => Device.tablet} {
         width: 400px;
     }        
     .ContentItems {
-        /* overflow-y: ${(props) => props.$scroll}; */
-        position: relative;
+        overflow-y: ${(props) => props.$scroll};
+        width: 100%;
+        /* position: relative;
         overflow: auto;
         scrollbar-color: yellow;
-        scrollbar-width: 40px;
+        scrollbar-width: 40px; */
     }
 `
 
@@ -66,6 +74,7 @@ const ItemContainer = styled.div`
     padding: 10px;
     border-radius: 10px;
     cursor: pointer;
+    justify-items: left;
     transition: 0.3s;
 
     &:hover {

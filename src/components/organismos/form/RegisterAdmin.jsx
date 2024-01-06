@@ -21,6 +21,7 @@ export function RegisterAdmin({ setState }) {
         formState: { errors },
         handleSubmit,
     } = useForm();
+
     const mutationInsertUser = useMutation({
         mutationKey: ['useRegister'],
         mutationFn: async (data) => {
@@ -39,6 +40,7 @@ export function RegisterAdmin({ setState }) {
             }
         },
     });
+    
     return (
         <Container className="bg-gray-900">
             <ContentClose >

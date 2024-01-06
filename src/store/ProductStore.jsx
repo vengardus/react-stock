@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { BrandModel } from "../supabase/brand.crud";
+import { ProductModel } from "../supabase/product.crud";
 
-export const useBrandStore = create((set) => ({
+export const useProductStore = create((set) => ({
     data: null,
     itemSelect: null,
     strSearch: '',
@@ -12,7 +12,8 @@ export const useBrandStore = create((set) => ({
     },
 
     getAll: async (p) => {
-        const oModel = new BrandModel()
+        console.log('parm', p)
+        const oModel = new ProductModel()
         const data = await oModel.getAll(p)
         set({ data: data })
         set({ itemSelect: data ? data[0] : null })
@@ -20,12 +21,13 @@ export const useBrandStore = create((set) => ({
         return data
     },
 
-    selectBrand: (p) => {
+    selectProduct: (p) => {
         set({ itemSelect: p })
     },
 
     insert: async (p) => {
-        const oModel = new BrandModel()
+        console.log(p)
+        const oModel = new ProductModel()
         const ok = await oModel.insert(p)
         if ( ok  )
             set((state) => ({
@@ -35,7 +37,7 @@ export const useBrandStore = create((set) => ({
     },
 
     delete: async (p) => {
-        const oModel = new BrandModel()
+        const oModel = new ProductModel()
         const ok = await oModel.delete(p)
         console.log('store.delete', ok)
         if (ok)
@@ -46,7 +48,7 @@ export const useBrandStore = create((set) => ({
     },
 
     update: async (p) => {
-        const oModel = new BrandModel()
+        const oModel = new ProductModel()
         if ( await oModel.update(p) )
             set((state) => ({
                 data: state.getAll(state.parameters)
@@ -55,7 +57,7 @@ export const useBrandStore = create((set) => ({
     },
 
     filter: async (p) => {
-        const oModel = new BrandModel()
+        const oModel = new ProductModel()
         const data = await oModel.filter(p)
         set({ data: data })
         return true

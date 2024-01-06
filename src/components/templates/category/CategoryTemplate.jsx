@@ -8,6 +8,7 @@ import { v } from "../../../styles/variables"
 import { Searcher } from "../../organismos/Searcher"
 import { useCategoryStore } from "../../../store/CategoryStore"
 
+const title = 'Categorías'
 
 export const CategoryTemplate = ({
     categories
@@ -37,7 +38,7 @@ export const CategoryTemplate = ({
 
             <section id="sectionTitle" className="">
                 <ContentFilter >
-                    <div className="title">Categorías</div>
+                    <div className="title">{title}</div>
                     <BtnFilter
                         bgColor={'#f6f3f3'}
                         textColor={'#353535'}

@@ -1,23 +1,23 @@
 import { useState } from "react"
 import { Header } from "../../organismos/Header"
-import { TableBrand } from "../../organismos/table/TableBrand"
-import { RegisterBrand } from "../../organismos/form/RegisterBrand"
+import { TableProduct } from "../../organismos/table/TableProduct"
+import { RegisterProduct } from "../../organismos/form/RegisterProduct"
 import { ContentFilter } from "../../atomos/ContentFilter"
 import { BtnFilter } from "../../moleculas/BtnFilter"
 import { v } from "../../../styles/variables"
 import { Searcher } from "../../organismos/Searcher"
-import { useBrandStore } from "../../../store/BrandStore"
+import { useProductStore } from "../../../store/ProductStore"
 
-const title = 'Marcas'
+const title = 'Productos'
 
-export const BrandTemplate = ({
-    brands
+export const ProductTemplate = ({
+    products
 }) => {
     const [state, setState] = useState(false)
     const [dataSelect, setDataSelect] = useState([])
     const [action, setAction] = useState("")
     const [openRegister, setOpenRegister] = useState(false)
-    const setStrSearch = useBrandStore((state) => state.setStrSearch)
+    const setStrSearch = useProductStore((state) => state.setStrSearch)
 
     const actionRegister = (action, data = []) => {
         setAction(action)
@@ -55,15 +55,15 @@ export const BrandTemplate = ({
             </section>
 
             <section id="sectionTable" className="px-2 flex flex-col gap-y-3">
-                <TableBrand
-                    data={brands ?? []}
+                <TableProduct
+                    data={products ?? []}
                     actionRegister={(action, data) => actionRegister(action, data)}
                 />
             </section>
 
             <section className="">
                 {
-                    openRegister && <RegisterBrand
+                    openRegister && <RegisterProduct
                         dataSelect={dataSelect}
                         action={action}
                         onClose={() => setOpenRegister(!openRegister)}
