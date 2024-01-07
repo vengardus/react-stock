@@ -6,7 +6,7 @@ export const Pagination = ({
     table,
     goBegin,
     page,
-    setPage,
+    //setPage,
     pageCount
 }) => {
 
@@ -33,6 +33,7 @@ export const Pagination = ({
                 <span className="icons">{<v.iconoflechaderecha />}</span>
             </button>
             <button
+                disabled={!table.getCanNextPage()}
                 onClick={() => table.setPageIndex(table.getPageCount()-1)}
             >
                 <span className="icons">{<v.iconoflechaderecha />}</span>
@@ -59,8 +60,13 @@ const Container = styled.div`
         cursor: pointer;
         text-align: center;
         transition: 0.3s;
-        &:hover {
-            box-shadow: 0px 10px 15px -3px ${(props) => props.$colorCategory};
+        &:enabled {
+            &:hover {
+                box-shadow: 0px 10px 15px -3px ${(props) => props.$colorCategory};
+            }
+        }
+        &:disabled {
+            background-color: gray;
         }
         .icons {
             color: #fff;

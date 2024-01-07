@@ -198,50 +198,52 @@ Configurada con proyecto Supabase: gardodb
   ```
 
   ```plpgsql: get_all_products
-
- DROP FUNCTION get_all_products(integer);
-
-create
-or replace function get_all_products (p_id_company int) returns table (
-  id bigint, 
-  description varchar,
-  id_brand bigint,
-  stock numeric,
-  stock_min numeric,
-  codebar varchar,
-  cod varchar,
-  price_sale numeric,
-  price_buy numeric,
-  id_category bigint,
-  id_company bigint,
-  description_brand varchar,
-  description_category varchar
-) as $$
-BEGIN
-    RETURN QUERY
-    SELECT
-        p.id,
-        p.description, 
-        p.id_brand, 
-        p.stock, 
-        p.stock_min, 
-        p.codebar, 
-        p.cod, 
-        p.price_sale,
-        p.price_buy, 
-        p.id_category, 
-        p.id_company, 
-        b.description AS description_brand,
-        c.description AS description_category
-    FROM
-        inv_products p
-        JOIN inv_brands b ON p.id_brand = b.id
-        JOIN inv_categories c ON p.id_category = c.id
-    WHERE
-        p.id_company = p_id_company;
-END;
-$$ language plpgsql;
-```
+  DROP FUNCTION get_all_products(integer);
+  create
+  or replace function get_all_products (p_id_company int) returns table (
+    id bigint, 
+    description varchar,
+    id_brand bigint,
+    stock numeric,
+    stock_min numeric,
+    codebar varchar,
+    cod varchar,
+    price_sale numeric,
+    price_buy numeric,
+    id_category bigint,
+    id_company bigint,
+    description_brand varchar,
+    description_category varchar,
+    category_color varchar
+  ) as $$
+  BEGIN
+      RETURN QUERY
+      SELECT
+          p.id,
+          p.description, 
+          p.id_brand, 
+          p.stock, 
+          p.stock_min, 
+          p.codebar, 
+          p.cod, 
+          p.price_sale,
+          p.price_buy, 
+          p.id_category, 
+          p.id_company, 
+          b.description AS description_brand,
+          c.description AS description_category,
+          c.color as category_color
+      FROM
+          inv_products p
+          JOIN inv_brands b ON p.id_brand = b.id
+          JOIN inv_categories c ON p.id_category = c.id
+      WHERE
+          p.id_company = p_id_company 
+      ORDER BY
+          p.created_at;
+  END;
+  $$ language plpgsql;
+  ```
 
 ## Ayuda memoria
 

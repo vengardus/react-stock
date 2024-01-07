@@ -24,14 +24,14 @@ import { useBrandStore } from "../../../store/BrandStore"
 import { APP_CONFIG } from "../../../utils/dataEstatica"
 import { FaArrowsAltV } from "react-icons/fa"
 import { Pagination } from "./Pagination"
-import { useState } from "react"
+//import { useState } from "react"
 export const TableBrand = ({
 
     data,
     actionRegister,
     isStriped = true
 }) => {
-    const [page, setPage] = useState(1)
+    //const [page, setPage] = useState(1)
     const deleteBrand = useBrandStore((state) => state.delete)
 
     const editIten = (item) => {
@@ -151,7 +151,7 @@ export const TableBrand = ({
                 table={table}
                 goBegin={() => table.setPageIndex(0)}
                 page={table.getState().pagination.pageIndex + 1}
-                setPage={setPage}
+                //setPage={setPage}
                 pageCount={table.getPageCount()}
             />
         </>

@@ -24,7 +24,7 @@ import { useCategoryStore } from "../../../store/CategoryStore"
 import { APP_CONFIG } from "../../../utils/dataEstatica"
 import { FaArrowsAltV } from "react-icons/fa"
 import { Pagination } from "./Pagination"
-import { useState } from "react"
+//import { useState } from "react"
 import { ContentColor } from "../../atomos/ContentColor"
 export const TableCategory = ({
 
@@ -32,7 +32,7 @@ export const TableCategory = ({
     actionRegister,
     isStriped = true
 }) => {
-    const [page, setPage] = useState(1)
+    //const [page, setPage] = useState(1)
     const deleteCategory = useCategoryStore((state) => state.delete)
 
     const editIten = (item) => {
@@ -161,7 +161,7 @@ export const TableCategory = ({
                 table={table}
                 goBegin={() => table.setPageIndex(0)}
                 page={table.getState().pagination.pageIndex + 1}
-                setPage={setPage}
+                //setPage={setPage}
                 pageCount={table.getPageCount()}
             />
         </>
