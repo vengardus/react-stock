@@ -1,12 +1,17 @@
 import styled from "styled-components"
-import { HeaderSecondary } from "../organismos/HeaderGastos"
+import { Header } from "../../organismos/Header"
+import { useState } from "react"
 
 
 export const PlantillaBase = () => {
+    const [state, setState] = useState(false)
     return (
         <Container>
             <header className="header">
-                <HeaderSecondary />
+                <Header stateConfig={{
+                    state: state,
+                    setState: () => setState(!state)
+                }} />
             </header>
             <section className="area1"></section>
             <section className="area2"></section>
@@ -23,7 +28,7 @@ const Container = styled.div`
     color: ${({ theme }) => theme.text};
     display: grid;
     grid-template:
-        "header" 70px
+        "header" 100px
         "area1" 100px
         "area2" 50px
         "main" auto;

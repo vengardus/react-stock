@@ -400,7 +400,7 @@ const Container = styled.div`
       }
     }
     .formulario {
-        display: grid: ;
+        display: grid;
         grid-template-columns: 1 1fr;
         @media ${Device.tablet} {
             display: grid;

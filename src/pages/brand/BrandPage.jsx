@@ -25,7 +25,8 @@ export const BrandPage = () => {
     queryFn: () =>filter({
       id_company: company.id,
       description: strSearch
-    })
+    }),
+    enabled: company?.id != null
   })
 
   if (queryBrand.isLoading) return <SpinnerLoader />

@@ -18,6 +18,14 @@ export const APP_CONFIG = {
       admin: 'admin'
     },
 
+    states: {
+      activo: 'activo'
+    },
+
+    table : {
+      pageSize: 7
+    },
+
     genericDescription : 'Genérica',
 
     whatsappData : {
@@ -161,7 +169,7 @@ export const DataModulosConfiguracion =[
       title:"Personal",
       subtitle:"ten el control de tu personal",
       icono:"https://i.ibb.co/5vgZ0fX/hombre.png",
-      link:"/configurar/usuarios",
+      link:"/config/user",
      
     },
   
@@ -189,28 +197,28 @@ export const DataModulosConfiguracion =[
   
   ]
   //tipo usuario
-  export const TipouserData = [
+  export const TypeUserData = [
     {
-      descripcion: "empleado",
-      icono: "🪖",
+      description: "empleado",
+      icon: "🪖",
     },
     {
-      descripcion: "administrador",
-      icono: "👑",
+      description: "administrador",
+      icon: "👑",
     },
   ];
   //tipodoc
-  export const TipoDocData = [
+  export const TypeDocumentData = [
     {
-      descripcion: "Dni",
-      icono: "🪖",
+      description: "Dni",
+      icon: "🪖",
     },
     {
-      descripcion: "Libreta electoral",
-      icono: "👑",
+      description: "Libreta electoral",
+      icon: "👑",
     },
     {
-      descripcion: "Otros",
-      icono: "👑",
+      description: "Otros",
+      icon: "👑",
     },
   ];

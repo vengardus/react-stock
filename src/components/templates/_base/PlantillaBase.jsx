@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Header } from "../organismos/Header"
+import { Header } from "../../organismos/Header"
 
 export const PlantillaBase = () => {
     const [state, setState] = useState(false)

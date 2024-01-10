@@ -23,7 +23,7 @@ export function RegisterAdmin({ setState }) {
     } = useForm();
 
     const mutationInsertUser = useMutation({
-        mutationKey: ['useRegister'],
+        mutationKey: ['userAdminRegister'],
         mutationFn: async (data) => {
             const p = {
                 email: data.email,

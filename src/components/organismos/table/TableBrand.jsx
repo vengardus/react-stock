@@ -90,8 +90,6 @@ export const TableBrand = ({
         getPaginationRowModel: getPaginationRowModel(),
     })
 
-    table.setPageSize = 5
-
     return (
         <>
             <div className="tableContainer">

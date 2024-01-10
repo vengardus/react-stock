@@ -7,7 +7,7 @@ export const HomePage = () => {
   const getCountUsersCompany = useCompanyStore((state) => state.getCountUsersCompany)
 
   useQuery({
-    queryKey: ['getCountUsersCompany'],
+    queryKey: ['getCountUsersCompany', dataCompany?.id],
     queryFn: () => getCountUsersCompany({
       id_company: dataCompany?.id
     }),

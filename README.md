@@ -49,7 +49,11 @@ pnpm add react-hook-form
 pnpm add react-spinners
 pnpm add dayjs
 pnpm add swiper
-pnpm add -D tailwindcss postcss autoprefixer   
+pnpm add -D tailwindcss postcss autoprefixer  
+
+## INSTALL 
+pnpm add @tanstack/react-table
+
 ```
 
 ## Configurar tailwind (Instalación con Vite)
@@ -244,6 +248,46 @@ Configurada con proyecto Supabase: gardodb
   END;
   $$ language plpgsql;
   ```
+
+```plpsql
+  DROP FUNCTION get_all_users(integer);
+
+  create
+  or replace function get_all_users (p_id_company int) returns table (
+    id bigint, 
+    name varchar,
+    document varchar,
+    address varchar, 
+    phone varchar, 
+    state varchar, 
+    type_user varchar, 
+    id_auth varchar,
+    type_document varchar, 
+    email varchar 
+  ) as $$
+  BEGIN
+      RETURN QUERY
+      SELECT
+          u.id,
+          u.name, 
+          u.document, 
+          u.address, 
+          u.phone, 
+          u.state, 
+          u.type_user, 
+          u.id_auth,
+          u.type_document, 
+          u.email 
+      FROM
+          inv_users u
+          JOIN inv_user_company uc ON u.id = uc.id_user
+      WHERE
+          uc.id_company = p_id_company 
+      ORDER BY
+          u.created_at;
+  END;
+  $$ language plpgsql;
+```
 
 ## Ayuda memoria
 
