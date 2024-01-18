@@ -15,7 +15,7 @@ export const APP_CONFIG = {
     appDesc: 'EF2R - Soluciones para tu empresa',
 
     type_user: {
-      admin: 'admin'
+      admin: 'superadmin'
     },
 
     states: {
@@ -67,7 +67,15 @@ export const APP_CONFIG = {
             id: '03',
             desc: 'Descargas'
         }
-    ]
+    ],
+
+    modules: {
+      users: 'users',
+      products: 'products',
+      product_brand: 'product_brand',
+      product_category: 'product_category',
+      
+    }
 };
 
 export const DesplegableUser = [
@@ -174,21 +182,21 @@ export const DataModulosConfiguracion =[
     },
   
     {
-      title:"Tu empresa",
+      title:"Tu Empresa",
       subtitle:"configura tus opciones básicas",
       icono:"https://i.ibb.co/x7mHPgm/administracion-de-empresas.png",
       link:"/configurar/empresa",
       
     },
     {
-      title:"Categoria de productos",
+      title:"Categoría de productos",
       subtitle:"asigna categorias a tus productos",
       icono:"https://i.ibb.co/VYbMRLZ/categoria.png",
       link:"/config/category",
       
     },
     {
-      title:"Marca de productos",
+      title:"Marca de Productos",
       subtitle:"gestiona tus marcas",
       icono:"https://i.ibb.co/1qsbCRb/piensa-fuera-de-la-caja.png",
       link:"/config/brand",

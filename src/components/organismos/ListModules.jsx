@@ -32,7 +32,7 @@ export function ListModules({
         } else {
             setCheckboxes(dataModules);
         }
-        console.log('List', dataPermissions)
+        
     }, [action, dataModules, setCheckboxes, dataPermissions]);
 
     const handlecheckbox = (id) => {

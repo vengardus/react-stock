@@ -1,7 +1,6 @@
 import Swal from "sweetalert2";
 import { getIdAuthSupabase } from "./auth";
 import { SupabaseCrud } from "./supabase.crud";
-import { consoleError } from "../utils/messages";
 
 export class UserModel extends SupabaseCrud {
     constructor() {
@@ -62,19 +61,7 @@ export class UserModel extends SupabaseCrud {
     }
 
     async filter(p) {
-        const { data, error } = await this.supabase
-            .from(this.TABLE_NAME)
-            .select()
-            //.eq("id_company", p.id_company)
-            .ilike("name", "%" + p.name + "%");
-
-        this.error = error != null;
-        if (this.error) {
-            this.message = error.message;
-            consoleError(
-                `${UserModel.name}.${this.filter.name}.${this.TABLE_NAME}: ${error.message}`
-            );
-        }
+        const { data } = await this.supabase.rpc("get_filter_users", p);
 
         return data
     }

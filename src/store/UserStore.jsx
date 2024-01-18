@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { UserModel } from "../supabase/user.crud";
 import { supabase } from "../supabase/supabase.config";
-import { APP_CONFIG } from "../utils/dataEstatica";
+import { APP_CONFIG, DataModulosConfiguracion } from "../utils/dataEstatica";
 import { UserCompanyModel } from "../supabase/userCompany.crud";
 import { PermissionModel } from "../supabase/permission.crud";
 
@@ -13,6 +13,7 @@ export const useUserStore = create((set) => ({
     strSearch: '',
     parameters: {},
     dataPermissions: [],
+    dataPermissionsLoggedInUser: [],
 
 
     insertAdmin: async (p) => {
@@ -67,7 +68,7 @@ export const useUserStore = create((set) => ({
                     id_user: p.id,
                     id_module: item.id,
                 };
-                if ( await oPermissionModel.insert(pPermission) )
+                if (await oPermissionModel.insert(pPermission))
                     ok = false
             }
         });
@@ -97,8 +98,8 @@ export const useUserStore = create((set) => ({
     filter: async (p) => {
         const oModel = new UserModel()
         const data = await oModel.filter(p)
-        set({ data: data })
-        return true
+        set({ dataAll: data })
+        return data
     },
 
     insert: async (pUser, pAuth, id_company, datacheckPermissions) => {
@@ -141,7 +142,7 @@ export const useUserStore = create((set) => ({
                     id_user: newUser[0].id,
                     id_module: item.id,
                 };
-                if ( await oPermissionModel.insert(p) )
+                if (await oPermissionModel.insert(p))
                     ok = false
             }
         });
@@ -154,9 +155,45 @@ export const useUserStore = create((set) => ({
 
     getPermissions: async (p) => {
         const oPermissionModel = new PermissionModel()
-        const data = await oPermissionModel.getAllByUser(p)
-        set({ dataPermissions: data })
-        return data
+        const dataPermissions = await oPermissionModel.getAllByUser(p)
+        set({ dataPermissions: dataPermissions })
+
+        // agregar propiedad isPermission a DataModulesConfiguration
+        // const result = DataModulosConfiguracion.map(modulo => {
+        //     const isPermission = dataPermissions?.some(permiso =>
+        //         permiso.inv_modules.name === modulo.title
+        //     )
+        //     return {
+        //         ...modulo,
+        //         isPermission: isPermission
+        //     };
+        // });
+        // DataModulosConfiguracion.splice(0, DataModulosConfiguracion.length)
+        // DataModulosConfiguracion.push(...result)
+
+        return dataPermissions
+    },
+
+    getPermissionsLoggedInUser: async (p) => {
+        const oPermissionModel = new PermissionModel()
+        const dataPermissions = await oPermissionModel.getAllByUser(p)
+        set({ dataPermissionsLoggedInUser: dataPermissions })
+        console.log('DATAPermission', dataPermissions)
+
+        // agregar propiedad isPermission a DataModulesConfiguration
+        const result = DataModulosConfiguracion.map(modulo => {
+            const isPermission = dataPermissions?.some(permiso =>
+                permiso.inv_modules.name === modulo.title
+            )
+            return {
+                ...modulo,
+                isPermission: isPermission
+            };
+        });
+        DataModulosConfiguracion.splice(0, DataModulosConfiguracion.length)
+        DataModulosConfiguracion.push(...result)
+
+        return dataPermissions
     }
 
 }))

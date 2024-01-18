@@ -2,20 +2,22 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { DataModulosConfiguracion } from "../../../utils/dataEstatica";
 import fondocuadros from "../../../assets/fondocuadros.svg"
+import { Message } from "../../moleculas/Message";
 
 
 export function ConfigTemplate() {
-
+  
   return (
     <Container>
 
       <div id="cards">
         {DataModulosConfiguracion.map((item, index) => {
           return (
-            <Link to={item.link?? ""}
+            <Link to={item.isPermission? item.link ?? "" : ""}
               className={item.link ? "card" : "card false"} key={index}>
-
-
+              {
+                !item.isPermission && <Message state={false} />
+              }
               <div className="card-content">
                 <div className="card-image">
                   <img src={item.icono} />

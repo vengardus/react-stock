@@ -69,13 +69,13 @@ export const TableCategory = ({
         {
             accessorKey: "color",
             header: "Color",
-            cell: (info) => <td data-title='Color' className=""> 
+            cell: (info) => 
                 <ContentColor 
                     $color={info.getValue()}
                     $alto={'25px'}
                     $ancho={'25px'}
                 />
-            </td>
+            
         },
         {
             accessorKey: "actions",

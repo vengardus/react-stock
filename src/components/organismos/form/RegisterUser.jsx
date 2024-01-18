@@ -61,7 +61,6 @@ export function RegisterUser({
                 type_document: typeDocumentSelect.description,
                 email: data.email
             };
-            console.log('update', p)
 
             if (! await updateUser(p, checkboxes))
                 modalAlert({
@@ -91,21 +90,12 @@ export function RegisterUser({
 
     useEffect(() => {
         if (action === APP_CONFIG.actionCrud.update) {
-            console.log('actio.edit', dataSelect)
             setTypeDocumentSelect({ icon: "", description: dataSelect.type_document })
             setTypeUserSelect({ icon: "", description: dataSelect.type_user })
         }
         setFocus('name')
 
-        console.log('dataselect', dataSelect)
-        console.log('permissions', dataPermissions)
     }, [setFocus, action, dataSelect, dataPermissions]);
-
-    const handleOnClick = () => {
-        console.log('final', checkboxes)
-    }
-
-
 
     if (isLoading) return <div>Cargando...</div>
 
@@ -132,11 +122,12 @@ export function RegisterUser({
                                 <input
                                     className="form__field"
                                     defaultValue={dataSelect.email}
-                                    type="text"
+                                    type="email"
                                     placeholder=""
                                     {...register("email", {
-                                        required: true,
+                                        required: (action==APP_CONFIG.actionCrud.update)? false: true,
                                     })}
+                                    disabled={action==APP_CONFIG.actionCrud.update? true:false}
                                 />
                                 <label className="form__label">Email</label>
                                 {errors.email?.type === "required" && <p>Campo requerido</p>}
@@ -149,7 +140,7 @@ export function RegisterUser({
                                 <input
                                     className="form__field"
                                     defaultValue={dataSelect.password}
-                                    type="text"
+                                    type={action==APP_CONFIG.actionCrud.update? "text":"password"}
                                     placeholder=""
                                     {...register("password", {
                                         required: true,
@@ -297,9 +288,6 @@ export function RegisterUser({
                             setCheckboxes={setCheckboxes}
                             action={action}
                         />
-                        <button onClick={
-                            handleOnClick
-                        }>click</button>
                     </section>
 
                     <div className="btnguardarContent">

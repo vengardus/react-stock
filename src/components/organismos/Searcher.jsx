@@ -5,7 +5,6 @@ export const Searcher = ({
     setSearcher
 }) => {
     const handleOnChange = (e) => {
-        console.log('buscar..', e.target.value)
         setSearcher(e.target.value)
     }
 

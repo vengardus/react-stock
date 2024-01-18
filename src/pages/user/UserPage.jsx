@@ -25,8 +25,8 @@ export const UserPage = () => {
   useQuery({
       queryKey: ['filterUsers', company?.id, strSearch],
     queryFn: () =>filter({
-      id_company: company.id,
-      description: strSearch
+      p_id_company: company.id,
+      p_str_search: strSearch
     }),
     enabled: company?.id != null
   })

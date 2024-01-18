@@ -27,18 +27,18 @@ export const UserTemplate = ({
     }
 
     const editIten = (item) => {
-        // if (item.name.trim() == APP_CONFIG.genericDescription) {
-        //     modalAlert({ type: 'warning', text: 'No se puede editar usuario genérica.' })
-        //     return
-        // }
+        if (item.type_user.trim() == APP_CONFIG.type_user.admin) {
+            modalAlert({ type: 'warning', text: 'No se puede modificar usuario superadmin.' })
+            return
+        }
         actionRegister(APP_CONFIG.actionCrud.update, item)
     }
 
     const deleteItem = (item) => {
-        // if (item.name.trim() == APP_CONFIG.genericDescription) {
-        //     modalAlert({ type: 'warning', text: 'No se puede eliminar usuario genérica.' })
-        //     return
-        // }
+        if (item.type_user.trim() == APP_CONFIG.type_user.admin) {
+            modalAlert({ type: 'warning', text: 'No se puede eliminar usuario admin.' })
+            return
+        }
 
         modalAlert({ type: 'delete' })
             .then(async (result) => {
@@ -80,7 +80,7 @@ export const UserTemplate = ({
 
             <TemplateBaseSectionTitle
                 title={title}
-                actionRegister={(action, data) => actionRegister(action, data)}
+                actionRegister={() =>actionRegister()}
             />
 
             <TemplateBaseSectionSearch setStrSearch={setStrSearch} />
