@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
 import { useUserStore } from "../../../store/UserStore";
 import { useCompanyStore } from "../../../store/CompanyStore";
 import { APP_CONFIG, TypeDocumentData, TypeUserData } from "../../../utils/dataEstatica";
@@ -13,9 +12,9 @@ import { ContentSelector } from "../../atomos/ContentSelector";
 import { Selector } from "../Selector";
 import { ListGeneric } from "../ListGeneric";
 import { useState } from "react";
-import { Device } from "../../../styles/breakpoints";
 import { ListModules } from "../ListModules";
 import { useQuery } from "@tanstack/react-query";
+import { FormContainer } from "./formr.style";
 
 
 export function RegisterUser({
@@ -100,7 +99,7 @@ export function RegisterUser({
     if (isLoading) return <div>Cargando...</div>
 
     return (
-        <Container>
+        <FormContainer>
             <div className="sub-contenedor">
                 <div className="headers">
                     <section>
@@ -110,7 +109,7 @@ export function RegisterUser({
                     </section>
 
                     <section>
-                        <span onClick={onClose}>x</span>
+                        <span className="text-lg" onClick={onClose}>x</span>
                     </section>
                 </div>
 
@@ -299,101 +298,6 @@ export function RegisterUser({
                     </div>
                 </form>
             </div>
-        </Container>
+        </FormContainer>
     );
 }
-const Container = styled.div`
-  transition: 0.5s;
-  top: 0;
-  left: 0;
-  position: fixed;
-  background-color: rgba(10, 9, 9, 0.5);
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-
-  .sub-contenedor {
-    width: 85%;
-    max-width: 85%;
-    border-radius: 20px;
-    background: ${({ theme }) => theme.bgtotal};
-    box-shadow: -10px 15px 30px rgba(10, 9, 9, 0.4);
-    padding: 13px 36px 20px 36px;
-    z-index: 100;
-
-    .headers {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-
-      h1 {
-        font-size: 20px;
-        font-weight: 500;
-      }
-      span {
-        font-size: 20px;
-        cursor: pointer;
-      }
-    }
-    .formulario {
-        display: grid;
-        grid-template-columns: 1 1fr;
-        @media ${Device.tablet} {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            .btnguardarContent {
-                display: flex;
-                justify-content: end;
-                grid-column: 1;
-                @media ${Device.tablet} {
-                    grid-column: 2;
-                }
-            }
-        }
-        section {
-            gap: 20px;
-            display: flex;
-            flex-direction: column;
-            .colorContainer {
-            .colorPickerContent {
-                padding-top: 15px;
-                min-height: 50px;
-            }
-            }
-        }
-    }
-  }
-`;
-
-// const ContentTitle = styled.div`
-//   display: flex;
-//   justify-content: start;
-//   align-items: center;
-//   gap: 20px;
-//   svg {
-//     font-size: 25px;
-//   }
-//   input {
-//     border: none;
-//     outline: none;
-//     background: transparent;
-//     padding: 2px;
-//     width: 40px;
-//     font-size: 28px;
-//   }
-// `;
-// const ContainerEmojiPicker = styled.div`
-//   position: absolute;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   top: 0;
-//   left: 0;
-//   bottom: 0;
-//   right: 0;
-// `;

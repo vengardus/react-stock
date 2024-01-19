@@ -73,12 +73,12 @@ Configurada con proyecto Supabase: gardodb
   as $$
   declare item record;
   begin
-    if new.type_user = 'admin' then
+    if new.type_user = 'superadmin' then
       insert into inv_companies (name, currency_symbol, id_user_admin) 
       values ('Genérico', 'S/.', new.id);
     end if;
     for item in select id from inv_modules loop
-      if new.type_user = 'admin' then
+      if new.type_user = 'superadmin' then
         insert into inv_permissions(id_user, id_module) values(new.id, item.id);
       end if;
     end loop;
@@ -249,7 +249,7 @@ Configurada con proyecto Supabase: gardodb
   $$ language plpgsql;
   ```
 
-```plpsql
+  ```plpsql: get_all_users
   DROP FUNCTION get_all_users(integer);
 
   create
@@ -287,6 +287,68 @@ Configurada con proyecto Supabase: gardodb
           u.created_at;
   END;
   $$ language plpgsql;
+```
+
+  ```plpgql: get_filter_users
+DROP FUNCTION get_filter_users(integer, varchar);
+
+create
+or replace function get_filter_users (p_id_company int, p_str_search varchar) returns table (
+  id bigint, 
+  name varchar,
+  document varchar,
+  address varchar, 
+  phone varchar, 
+  state varchar, 
+  type_user varchar, 
+  id_auth varchar,
+  type_document varchar, 
+  email varchar 
+) as $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        u.id,
+        u.name, 
+        u.document, 
+        u.address, 
+        u.phone, 
+        u.state, 
+        u.type_user, 
+        u.id_auth,
+        u.type_document, 
+        u.email 
+    FROM
+        inv_users u
+        JOIN inv_user_company uc ON u.id = uc.id_user
+    WHERE
+        uc.id_company = p_id_company 
+        and u.name ilike '%'||p_str_search||'%'
+    ORDER BY
+        u.created_at;
+END;
+$$ language plpgsql;
+```
+
+  ```plpgsql: insert_product
+CREATE OR REPLACE FUNCTION insert_product(p_description varchar, p_id_brand int, p_stock numeric, p_stock_min numeric, p_codebar varchar, p_cod varchar, p_price_sale numeric, p_price_buy numeric, p_id_category int, p_id_company int)
+RETURNS VOID AS $$
+BEGIN
+    -- Verificar si la combinación description + id_company ya existe
+    PERFORM 1
+    FROM inv_brands
+    WHERE description = p_description AND id_company = p_id_company;
+
+    -- Si no existe, insertar el nuevo registro
+    IF NOT FOUND THEN
+        INSERT INTO inv_products(description, id_brand, stock, stock_min, codebar, cod, price_sale, price_buy, id_category, id_company)
+        VALUES (p_description, p_id_brand, p_stock, p_stock_min, p_codebar, p_cod, p_price_sale, p_price_buy, p_id_category, p_id_company);
+        RAISE NOTICE 'Registro insertado correctamente.';
+    ELSE
+        RAISE EXCEPTION 'La producto ya existe.';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
 ```
 
 ## Ayuda memoria

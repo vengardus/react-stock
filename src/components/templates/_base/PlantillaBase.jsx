@@ -1,19 +1,10 @@
-import { useState } from "react"
-import { Header } from "../../organismos/Header"
+import { TemplateBaseHeader } from "./TemplateBaseHeader"
 
 export const PlantillaBase = () => {
-    const [state, setState] = useState(false)
 
     return (
         <div className="containerTemplate">
-            <header className="flex align-middle h-[70px]">
-                <Header
-                    stateConfig={{
-                        state:state, 
-                        setState:()=>setState(!state)
-                    }}
-                />
-            </header>
+            <TemplateBaseHeader />
 
             <section id="section1" className="">
             </section>

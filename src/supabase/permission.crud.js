@@ -15,7 +15,6 @@ export class PermissionModel extends SupabaseCrud {
     }
 
     async insert(p) {
-        console.log("permission", p);
         const data = await super.insert(p);
         if (this.error)
             Swal.fire({

@@ -43,14 +43,7 @@ export const useUserStore = create((set) => ({
         return data ?? []
     },
 
-    // update: async (p) => {
-    //     const oUserModel = new UserModel()
-    //     await oUserModel.update(p)
-    //     set((state) => ({ dataAll: state.getAll(state.parameters) }))
-    // },
-
     update: async (p, datacheckPermissions) => {
-        console.log('datachecks', p, datacheckPermissions)
         const oUserModel = new UserModel()
         if (! await oUserModel.update(p))
             return false
@@ -103,7 +96,6 @@ export const useUserStore = create((set) => ({
     },
 
     insert: async (pUser, pAuth, id_company, datacheckPermissions) => {
-        console.log('from register', pUser, pAuth)
         const oModel = new UserModel()
 
         // alta auth
@@ -112,7 +104,6 @@ export const useUserStore = create((set) => ({
             console.log('Error:', error.message)
             return false
         }
-        console.log('signUp', data)
 
         // insert User
         const p = pUser
@@ -122,7 +113,6 @@ export const useUserStore = create((set) => ({
         const newUser = await oModel.insert(p)
 
         if (!newUser) return false
-        console.log('newUser', newUser, newUser[0].id)
 
         // insert user_company (asignacion)
         const oUserCompanyModel = new UserCompanyModel()
@@ -178,7 +168,6 @@ export const useUserStore = create((set) => ({
         const oPermissionModel = new PermissionModel()
         const dataPermissions = await oPermissionModel.getAllByUser(p)
         set({ dataPermissionsLoggedInUser: dataPermissions })
-        console.log('DATAPermission', dataPermissions)
 
         // agregar propiedad isPermission a DataModulesConfiguration
         const result = DataModulosConfiguracion.map(modulo => {
