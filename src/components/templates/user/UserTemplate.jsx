@@ -19,7 +19,8 @@ export const UserTemplate = ({ data }) => {
 
             <TemplateBaseSectionTitle
                 title={title}
-                actionRegister={() => actionRegister()}
+                // actionRegister={() => actionRegister()}
+                actionRegister={({action, data}) => actionRegister({action, data})}
             />
 
             <UserSearch />

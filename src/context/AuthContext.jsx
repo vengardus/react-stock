@@ -14,8 +14,10 @@ export const AuthContextProvider = ({ children }) => {
             async (event, session) => {
                 if (session == null)
                     setUser(null)
-                else
+                else {
+                    //console.log(session)
                     setUser(session.user)
+                }
             }
         )
         return () => {

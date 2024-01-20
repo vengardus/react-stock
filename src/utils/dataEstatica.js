@@ -37,8 +37,10 @@ export const APP_CONFIG = {
     },
 
     movementType: {
-        ingreso: "I",
-        gasto: "G",
+        // ingreso: "I",
+        // gasto: "G",
+        incoming: "ingreso",
+        outgoing: "salida"
     },
     actionCrud: {
         update: "update",

@@ -11,6 +11,7 @@ import { ToggleTema } from "../ToggleTema"
 export const SideBar = ({ state, setState }) => {
     const { user } = UserAuth()
 
+
     return (
         <Main $isOpen={state}>
             <span className="SiderBarButton" onClick={() => setState(!state)}>
@@ -35,7 +36,7 @@ export const SideBar = ({ state, setState }) => {
                             </div>
                         }
                         {
-                            user && <span>{String(user?.name)?.slice(0, 12)}</span>
+                            user && <span>{String(user?.email)?.slice(0, 12)}</span>
                         }
 
                     </div>

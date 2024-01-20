@@ -5,7 +5,7 @@ import { ContentActionsTable } from "../../../organismos/table/ContentActionsTab
 import { TableGeneric } from "../../../organismos/table/TableGeneric"
 
 
-export const UserTable = ({
+export const KardexTable = ({
     data,
     actionRegister,
 }) => {
@@ -16,7 +16,7 @@ export const UserTable = ({
             modalAlert({ type: 'warning', text: 'No se puede modificar usuario superadmin.' })
             return
         }
-        actionRegister({action:APP_CONFIG.actionCrud.update, data:item})
+        actionRegister(APP_CONFIG.actionCrud.update, item)
     }
     
     const deleteItem = (item) => {
@@ -37,18 +37,23 @@ export const UserTable = ({
     
     const tableColumns = [
         {
-            accessorKey: "name",
-            header: "Nombre",
+            accessorKey: "date",
+            header: "Fecha",
             cell: (info) => <span>{info.getValue()}</span>
         },
         {
-            accessorKey: "email",
-            header: "Email",
+            accessorKey: "product_description",
+            header: "Producto",
             cell: (info) => <span>{info.getValue()}</span>
         },
         {
-            accessorKey: "type_user",
-            header: "T.User",
+            accessorKey: "quantity",
+            header: "Cant",
+            cell: (info) => <span>{info.getValue()}</span>
+        },
+        {
+            accessorKey: "detail",
+            header: "Detalle",
             cell: (info) => <span>{info.getValue()}</span>
         },
         {

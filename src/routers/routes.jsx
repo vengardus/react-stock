@@ -15,6 +15,7 @@ import { ProductPage } from "../pages/product/ProductPage"
 import { UserPage } from "../pages/user/UserPage"
 import { useUserStore } from "../store/UserStore"
 import { PageNotAuth } from "../components/moleculas/PageNotAuth.jsx"
+import { KardexPage } from "../pages/kardex/KardexPage.jsx"
 
 const isPermission = (module, permissions) => {
     return permissions.some(permission => permission.inv_modules.name === module)
@@ -42,7 +43,7 @@ export function MyRoutes() {
                 <Route path="/config/brand" element={<BrandPage />} />
                 <Route path="/config/category" 
                 element={
-                    isPermission('Categoría de Producto', dataPermissionsLoggedInUser)
+                    isPermission('Categoría de productos', dataPermissionsLoggedInUser)
                         ? <CategoryPage /> : <PageNotAuth />
                 } />
                 <Route path="/config/product" element={<ProductPage />} />
@@ -51,6 +52,7 @@ export function MyRoutes() {
                         isPermission('Personal', dataPermissionsLoggedInUser)
                             ? <UserPage /> : <ConfigPage />
                     } />
+                <Route path="/kardex" element={<KardexPage />} />
             </Route>
         </Routes>
 

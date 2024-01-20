@@ -351,6 +351,50 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
+  ```plpgsql: get_all_kardex_by_company
+DROP FUNCTION get_all_kardex_by_company(integer);
+
+create
+or replace function get_all_kardex_by_company (p_id_company int) returns table (
+  id bigint, 
+  id_product bigint,
+  quantity numeric,
+  date date,
+  type varchar,
+  detail varchar,
+  id_user bigint,
+  product_description varchar,
+  user_name varchar,
+  product_stock numeric
+) as $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        k.id,
+        k.id_product,
+        k.quantity,
+        k.date,
+        k.type,
+        k.detail,
+        k.id_user,
+        p.description as product_description,
+        u.name as user_name,
+        p.stock as product_stock
+
+        
+    FROM
+        inv_kardex k
+        JOIN inv_companies c ON k.id_company = c.id
+        JOIN inv_users u ON k.id_user = u.id
+        JOIN inv_products p ON k.id_product = p.id
+    WHERE
+        k.id_company = p_id_company 
+    ORDER BY
+        k.created_at;
+END;
+$$ language plpgsql;
+```
+
 ## Ayuda memoria
 
 ### Deshabilitar propTypes del lint en vsCode
