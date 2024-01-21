@@ -22,6 +22,7 @@ export const useProductStore = create((set) => ({
     },
 
     selectProduct: (p) => {
+        console.log('selectProduct')
         set({ itemSelect: p })
     },
 

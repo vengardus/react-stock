@@ -38,6 +38,9 @@ export const FormContainer = styled.div`
         cursor: pointer;
       }
     }
+    .sectionSearcher {
+      position: relative;
+    }
     .formulario {
         display: grid;
         grid-template-columns: 1 1fr;

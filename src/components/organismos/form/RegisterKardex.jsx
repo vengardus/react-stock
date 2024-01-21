@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import { useUserStore } from "../../../store/UserStore";
 import { useCompanyStore } from "../../../store/CompanyStore";
 import { APP_CONFIG, TypeDocumentData, TypeUserData } from "../../../utils/dataEstatica";
@@ -7,14 +8,15 @@ import { InputText } from "./InputText";
 import { BtnSave } from "../../moleculas/BtnSave";
 import { v } from "../../../styles/variables";
 import { convertirCapitalize } from "../../../utils/conversiones";
-import { modalAlert } from "../../../utils/modalAlert";
 import { ContentSelector } from "../../atomos/ContentSelector";
 import { Selector } from "../Selector";
 import { ListGeneric } from "../ListGeneric";
 import { useState } from "react";
-import { ListModules } from "../ListModules";
 import { useQuery } from "@tanstack/react-query";
 import { FormContainer } from "./formr.style";
+import { Searcher } from "../Searcher";
+import { useProductStore } from "../../../store/ProductStore";
+
 
 
 export function RegisterKardex({
@@ -25,7 +27,6 @@ export function RegisterKardex({
 }) {
     const [stateTypeDocument, setStateTypeDocument] = useState(false)
     const [typeDocumentSelect, setTypeDocumentSelect] = useState(TypeDocumentData[0])
-    const [stateTypeUser, setStateTypeUser] = useState(false)
     const [typeUserSelect, setTypeUserSelect] = useState(TypeUserData[0])
 
     const insertUser = useUserStore((state) => state.insert)
@@ -35,7 +36,12 @@ export function RegisterKardex({
     const getPermissionsByUser = useUserStore((state) => state.getPermissions)
     const dataPermissions = useUserStore((state) => state.dataPermissions)
 
-    const [checkboxes, setCheckboxes] = useState([])
+    const setStrSearchProduct = useProductStore((state) => state.setStrSearch)
+    const selectProduct = useProductStore((state) => state.selectProduct)
+    const dataProduct = useProductStore((state) => state.data)
+    const itemSelectProduct = useProductStore((state) => state.itemSelect)
+    const [stateListProduct, setStateListProduct] = useState(false)
+
 
     const { isLoading } = useQuery({
         queryKey: ['getPermissionByUser', dataSelect?.id ?? 0],
@@ -61,12 +67,7 @@ export function RegisterKardex({
                 type_document: typeDocumentSelect.description,
                 email: data.email
             };
-
-            if (! await updateUser(p, checkboxes))
-                modalAlert({
-                    type: 'warning',
-                    text: `Ocurrió un error. No se actualizó el usuario.`
-                })
+            await updateUser(p)
             onClose();
         } else {
             const pUser = {
@@ -83,7 +84,7 @@ export function RegisterKardex({
                 password: data.password
             }
 
-            await insertUser(pUser, pAuth, dataCompany.id, checkboxes)
+            await insertUser(pUser, pAuth, dataCompany.id)
             onClose();
         }
     }
@@ -92,6 +93,9 @@ export function RegisterKardex({
         if (action === APP_CONFIG.actionCrud.update) {
             setTypeDocumentSelect({ icon: "", description: dataSelect.type_document })
             setTypeUserSelect({ icon: "", description: dataSelect.type_user })
+        }
+        else {
+            selectProduct(null)
         }
         setFocus('name')
 
@@ -119,47 +123,42 @@ export function RegisterKardex({
                     </section>
                 </div>
 
+                {/* Search Product */}
+                <div className="sectionSearcher flex justify-start  ">
+                    <div onClick={() => setStateListProduct(!stateListProduct)}>
+                        <Searcher
+                            setSearcher={setStrSearchProduct}
+                        />
+                    </div>
+                    {
+                        stateListProduct &&
+                        <ListGeneric
+                            data={dataProduct ?? []}
+                            setState={() => setStateListProduct(!stateListProduct)}
+                            func={selectProduct}
+                            scroll={scroll}
+                            bottom={'-250px'}
+                        />
+                    }
+                </div>
+
+                {
+                    itemSelectProduct &&
+                    <CardProduct>
+                        <span style={{ color: "#1fee61", fontWeight: "bold" }}>
+                            {itemSelectProduct.description}
+                        </span>
+                        <span style={{ color: "#f6faf7" }}>
+                            stock actual: {itemSelectProduct.stock}
+                        </span>
+                    </CardProduct>
+                }
+
+
                 <form className="formulario" onSubmit={handleSubmit(registerUser)}>
+
                     <section>
-                        {/* email */}
-                        <article>
-                            <InputText icono={<v.iconoemail />}>
-                                <input
-                                    className="form__field"
-                                    defaultValue={dataSelect.email}
-                                    type="email"
-                                    placeholder=""
-                                    {...register("email", {
-                                        required: (action == APP_CONFIG.actionCrud.update) ? false : true,
-                                    })}
-                                    disabled={action == APP_CONFIG.actionCrud.update ? true : false}
-                                />
-                                <label className="form__label">Email</label>
-                                {errors.email?.type === "required" && <p>Campo requerido</p>}
-                            </InputText>
-                        </article>
 
-                        {/* passwod */}
-                        <article>
-                            <InputText icono={<v.iconopass />}>
-                                <input
-                                    className="form__field"
-                                    defaultValue={dataSelect.password}
-                                    type={action == APP_CONFIG.actionCrud.update ? "text" : "password"}
-                                    placeholder=""
-                                    {...register("password", {
-                                        required: true,
-                                        minLength: 6,
-                                    })}
-                                />
-                                <label className="form__label">Password</label>
-                                {errors.password?.type === "required" && <p>Campo requerido</p>}
-                                {errors.password?.type === "minLength" && (
-                                    <p>Debe tener al menos 6 caracteres</p>
-                                )}
-
-                            </InputText>
-                        </article>
 
                         {/* name */}
                         <article>
@@ -206,93 +205,7 @@ export function RegisterKardex({
                             /> */}
                         </ContentSelector>
 
-                        {/* document */}
-                        <article>
-                            <InputText icono={<v.iconoUser />}>
-                                <input
-                                    className="form__field"
-                                    defaultValue={dataSelect.document}
-                                    type="text"
-                                    placeholder=""
-                                    {...register("document", {
-                                        required: true,
-                                    })}
-                                />
-                                <label className="form__label">Documento</label>
-                                {errors.document?.type === "required" && <p>Campo requerido</p>}
-                            </InputText>
-                        </article>
 
-                        {/* phone */}
-                        <article>
-                            <InputText icono={<v.iconoUser />}>
-                                <input
-                                    className="form__field"
-                                    defaultValue={dataSelect.phone}
-                                    type="text"
-                                    placeholder=""
-                                    {...register("phone", {
-                                        required: true,
-                                    })}
-                                />
-                                <label className="form__label">Teléfono</label>
-                                {errors.phone?.type === "required" && <p>Campo requerido</p>}
-                            </InputText>
-                        </article>
-                    </section>
-
-                    <section>
-                        {/* address */}
-                        <article>
-                            <InputText icono={<v.iconoUser />}>
-                                <input
-                                    className="form__field"
-                                    defaultValue={dataSelect.address}
-                                    type="text"
-                                    placeholder=""
-                                    {...register("address", {
-                                        required: true,
-                                    })}
-                                />
-                                <label className="form__label">Dirección</label>
-                                {errors.address?.type === "required" && <p>Campo requerido</p>}
-                            </InputText>
-                        </article>
-
-                        {/* type_user  */}
-                        <ContentSelector>
-                            <label>Tipo Usuario:</label>
-                            <Selector
-                                text1={'🍿'}
-                                text2={typeUserSelect?.description}
-                                color={'#fc6027'}
-                                state={stateTypeUser}
-                                func={() => setStateTypeUser(!stateTypeUser)}
-                            />
-                            {
-                                stateTypeUser
-                                && <ListGeneric
-                                    data={TypeUserData}
-                                    scroll={"scroll"}
-                                    setState={() => setStateTypeUser(!stateTypeUser)}
-                                    bottom={"-240px"}
-                                    func={(p) => setTypeUserSelect(p)}
-                                />
-                            }
-                            {/* <BtnFilter
-                                bgColor={'#f6f3f3'}
-                                textColor={'#353535'}
-                                icon={<v.agregar />}
-                                func={() => addTypeDocument()}
-                            /> */}
-                        </ContentSelector>
-
-                        PERMISOS
-                        <ListModules
-                            checkboxes={checkboxes}
-                            setCheckboxes={setCheckboxes}
-                            action={action}
-                        />
                     </section>
 
                     <div className="btnguardarContent">
@@ -307,3 +220,13 @@ export function RegisterKardex({
         </FormContainer>
     );
 }
+
+const CardProduct = styled.section`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  border: 1px dashed #54f04f;
+  background-color: rgba(84, 240, 79, 0.1);
+  padding: 10px;
+`;

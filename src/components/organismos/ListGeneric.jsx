@@ -10,7 +10,7 @@ export const ListGeneric = ({
     bottom, 
     scroll }) => {
     const selectItem = (p) => {
-        //console.log('item', p)
+        console.log('item', p)
         func(p)
         setState()
     }
