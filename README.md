@@ -395,6 +395,91 @@ END;
 $$ language plpgsql;
 ```
 
+  ```plpgsql: functiond and trigger update_stock  
+create or replace function update_stock()
+returns trigger
+language plpgsql
+as $$
+declare stock_product numeric;
+begin
+  if new.type = 'ingreso' then
+    update inv_products 
+    set stock = stock + new.quantity 
+    where id = new.id_product;
+  else
+    select into stock_product stock
+    from inv_products 
+    where id = new.id_product;
+
+    if stock_product > new.quantity then
+      update inv_products 
+      set stock = stock - new.quantity 
+      where id = new.id_product;
+    else
+      raise exception 'Stock agotado para el producto!!!';
+    end if;
+  end if;
+
+  return new;
+end;
+$$;
+
+
+create or replace trigger update_stock_trigger
+after insert on inv_kardex 
+for each row 
+execute function update_stock();
+```
+
+  ```plpgsql: get_filter_kardex_by_product
+
+ /*DROP FUNCTION get_filter_kardex_by_product(integer, varchar);*/
+
+create
+or replace function get_filter_kardex_by_product (p_id_company int, , p_str_search varchar) returns table (
+  id bigint, 
+  id_product bigint,
+  quantity numeric,
+  date date,
+  type varchar,
+  detail varchar,
+  id_user bigint,
+  product_description varchar,
+  user_name varchar,
+  product_stock numeric
+) as $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        k.id,
+        k.id_product,
+        k.quantity,
+        k.date,
+        k.type,
+        k.detail,
+        k.id_user,
+        p.description as product_description,
+        u.name as user_name,
+        p.stock as product_stock
+
+        
+    FROM
+        inv_kardex k
+        JOIN inv_companies c ON k.id_company = c.id
+        JOIN inv_users u ON k.id_user = u.id
+        JOIN inv_products p ON k.id_product = p.id
+    WHERE
+        k.id_company = p_id_company 
+        and p.description ilike '%'||p_str_search||'%'
+    ORDER BY
+        k.created_at;
+END;
+$$ language plpgsql;
+
+/* test */
+select get_filter_kardex_by_product(9, 'tecla');
+```
+
 ## Ayuda memoria
 
 ### Deshabilitar propTypes del lint en vsCode
