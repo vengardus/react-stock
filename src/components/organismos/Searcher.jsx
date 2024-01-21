@@ -29,7 +29,7 @@ const Container = styled.div`
     color: ${(props) => props.theme.text};
     display: flex;
     height: 60px;
-    width: 70%;
+    width: 60%;
     border: 1px solid #414244;
     
     .content {

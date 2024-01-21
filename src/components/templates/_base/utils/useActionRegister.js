@@ -13,13 +13,6 @@ export const useActionRegister = () => {
         data = []
     }
     ) => {
-        // const {
-        //     movementType ,
-        //     action = APP_CONFIG.actionCrud.insert,
-        //     data = []
-        // } = prop
-        console.log('movementType', movementType)
-        console.log('action', action)
         setAction(action);
         setDataSelect(data);
         setOpenRegister(!openRegister);

@@ -23,7 +23,7 @@ export class PermissionModel extends SupabaseCrud {
                 title: "Oops",
                 text: `Error al insertar permiso: ${this.message}`,
                 showConfirmButton: false,
-                timer: 1500,
+                //timer: 1500,
             });
         return data;
     }

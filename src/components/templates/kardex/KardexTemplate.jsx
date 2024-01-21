@@ -1,6 +1,7 @@
 import { RegisterKardex } from "../../organismos/form/RegisterKardex"
 import { TemplateBaseHeader } from "../_base/TemplateBaseHeader"
 import { useActionRegister } from "../_base/utils/useActionRegister"
+import { KardexSearch } from "./components/KardexSearch"
 import { KardexTabs } from "./components/KardexTabs"
 import { TemplateBaseSectionTitle } from "./components/TemplateBaseSectionTitle"
 
@@ -20,6 +21,8 @@ export const KardexTemplate = ({ data }) => {
                 title={title}
                 actionRegister={({movementType, action, data}) => actionRegister({movementType, action, data})}
             />
+
+            <KardexSearch />
 
             <KardexTabs data={data}/>
 

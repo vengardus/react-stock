@@ -1,8 +1,8 @@
-import { useUserStore } from "../../../../store/UserStore"
+import { useKardexStore } from "../../../../store/KardexStore"
 import { TemplateBaseSectionSearch } from "../../_base/TemplateBaseSectionSearch"
 
-export const UserSearch = () => {
-    const setStrSearch = useUserStore((state) => state.setStrSearch)
+export const KardexSearch = () => {
+    const setStrSearch = useKardexStore((state) => state.setStrSearch)
 
     return (
         <TemplateBaseSectionSearch setStrSearch={setStrSearch} />

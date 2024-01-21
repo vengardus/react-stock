@@ -47,6 +47,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     gap: 15px;
+    margin-top: 1rem;
     button {
         background-color: #FF7800;
         border: none;

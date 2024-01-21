@@ -36,7 +36,7 @@ export class UserModel extends SupabaseCrud {
                 title: "Oops",
                 text: `Error al insertar usuario: ${this.message}`,
                 showConfirmButton: false,
-                timer: 1500,
+                //timer: 1500,
             });
         return data;
     }

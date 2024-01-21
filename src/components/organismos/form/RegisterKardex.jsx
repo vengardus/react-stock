@@ -3,19 +3,16 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useUserStore } from "../../../store/UserStore";
 import { useCompanyStore } from "../../../store/CompanyStore";
-import { APP_CONFIG, TypeDocumentData, TypeUserData } from "../../../utils/dataEstatica";
+import { APP_CONFIG} from "../../../utils/dataEstatica";
 import { InputText } from "./InputText";
 import { BtnSave } from "../../moleculas/BtnSave";
 import { v } from "../../../styles/variables";
-import { convertirCapitalize } from "../../../utils/conversiones";
-import { ContentSelector } from "../../atomos/ContentSelector";
-import { Selector } from "../Selector";
 import { ListGeneric } from "../ListGeneric";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { FormContainer } from "./formr.style";
 import { Searcher } from "../Searcher";
 import { useProductStore } from "../../../store/ProductStore";
+import { useKardexStore } from "../../../store/KardexStore";
 
 
 
@@ -25,28 +22,17 @@ export function RegisterKardex({
     action,
     movementType
 }) {
-    const [stateTypeDocument, setStateTypeDocument] = useState(false)
-    const [typeDocumentSelect, setTypeDocumentSelect] = useState(TypeDocumentData[0])
-    const [typeUserSelect, setTypeUserSelect] = useState(TypeUserData[0])
+    const dataUser = useUserStore((state) => state.data)
 
-    const insertUser = useUserStore((state) => state.insert)
-    const updateUser = useUserStore((state) => state.update)
+    const insertKardex = useKardexStore((state) => state.insert)
     const dataCompany = useCompanyStore((state) => state.data)
 
-    const getPermissionsByUser = useUserStore((state) => state.getPermissions)
-    const dataPermissions = useUserStore((state) => state.dataPermissions)
 
     const setStrSearchProduct = useProductStore((state) => state.setStrSearch)
     const selectProduct = useProductStore((state) => state.selectProduct)
     const dataProduct = useProductStore((state) => state.data)
     const itemSelectProduct = useProductStore((state) => state.itemSelect)
     const [stateListProduct, setStateListProduct] = useState(false)
-
-
-    const { isLoading } = useQuery({
-        queryKey: ['getPermissionByUser', dataSelect?.id ?? 0],
-        queryFn: () => getPermissionsByUser({ id_user: dataSelect?.id ?? 0 })
-    })
 
     const {
         register,
@@ -56,52 +42,28 @@ export function RegisterKardex({
     } = useForm();
 
     const registerUser = async (data) => {
-        if (action === APP_CONFIG.actionCrud.update) {
+        if (action === APP_CONFIG.actionCrud.insert) {
             const p = {
-                id: dataSelect.id,
-                name: convertirCapitalize(data.name),
-                document: data.document,
-                address: data.address,
-                phone: data.phone,
-                type_user: typeUserSelect.description,
-                type_document: typeDocumentSelect.description,
-                email: data.email
+                date : new Date(),
+                type: movementType,
+                id_user: dataUser.id,
+                id_product: itemSelectProduct.id,
+                quantity: parseFloat(data.quantity),
+                detail: data.detail,
+                id_company: dataCompany.id
             };
-            await updateUser(p)
-            onClose();
-        } else {
-            const pUser = {
-                name: convertirCapitalize(data.name),
-                document: data.document,
-                address: data.address,
-                phone: data.phone,
-                type_user: typeUserSelect.description,
-                type_document: typeDocumentSelect.description,
-                email: data.email
-            };
-            const pAuth = {
-                email: data.email,
-                password: data.password
-            }
-
-            await insertUser(pUser, pAuth, dataCompany.id)
+            await insertKardex(p)
             onClose();
         }
     }
 
     useEffect(() => {
-        if (action === APP_CONFIG.actionCrud.update) {
-            setTypeDocumentSelect({ icon: "", description: dataSelect.type_document })
-            setTypeUserSelect({ icon: "", description: dataSelect.type_user })
-        }
-        else {
+       if (action === APP_CONFIG.actionCrud.insert) 
             selectProduct(null)
-        }
         setFocus('name')
 
-    }, [setFocus, action, dataSelect, dataPermissions]);
+    }, [setFocus, action, selectProduct]);
 
-    if (isLoading) return <div>Cargando...</div>
 
     return (
         <FormContainer>
@@ -158,53 +120,39 @@ export function RegisterKardex({
                 <form className="formulario" onSubmit={handleSubmit(registerUser)}>
 
                     <section>
-
-
-                        {/* name */}
+                        {/* quantity */}
                         <article>
-                            <InputText icono={<v.iconoUser />}>
+                            <InputText icono={<v.iconocalculadora />}>
                                 <input
                                     className="form__field"
-                                    defaultValue={dataSelect.name}
-                                    type="text"
+                                    defaultValue={dataSelect.quantity}
+                                    type="number"
                                     placeholder=""
-                                    {...register("name", {
+                                    {...register("quantity", {
                                         required: true,
                                     })}
                                 />
-                                <label className="form__label">Nombre</label>
-                                {errors.nombre?.type === "required" && <p>Campo requerido</p>}
+                                <label className="form__label">Cantidad</label>
+                                {errors.quantity?.type === "required" && <p>Campo requerido</p>}
                             </InputText>
                         </article>
 
-                        {/* type_document  */}
-                        <ContentSelector>
-                            <label>Tipo Documento:</label>
-                            <Selector
-                                text1={'🍿'}
-                                text2={typeDocumentSelect?.description}
-                                color={'#fc6027'}
-                                state={stateTypeDocument}
-                                func={() => setStateTypeDocument(!stateTypeDocument)}
-                            />
-                            {
-                                stateTypeDocument
-                                && <ListGeneric
-                                    data={TypeDocumentData}
-                                    scroll={"scroll"}
-                                    setState={() => setStateTypeDocument(!stateTypeDocument)}
-                                    bottom={"-240px"}
-                                    func={(p) => setTypeDocumentSelect(p)}
+                        {/* detail */}
+                        <article>
+                            <InputText icono={<v.iconotodos />}>
+                                <input
+                                    className="form__field"
+                                    defaultValue={dataSelect.datail}
+                                    type="text"
+                                    placeholder=""
+                                    {...register("detail", {
+                                        required: true,
+                                    })}
                                 />
-                            }
-                            {/* <BtnFilter
-                                bgColor={'#f6f3f3'}
-                                textColor={'#353535'}
-                                icon={<v.agregar />}
-                                func={() => addTypeDocument()}
-                            /> */}
-                        </ContentSelector>
-
+                                <label className="form__label">Motivo</label>
+                                {errors.detail?.type === "required" && <p>Campo requerido</p>}
+                            </InputText>
+                        </article>
 
                     </section>
 
@@ -229,4 +177,5 @@ const CardProduct = styled.section`
   border: 1px dashed #54f04f;
   background-color: rgba(84, 240, 79, 0.1);
   padding: 10px;
+  margin-bottom: 8px;
 `;

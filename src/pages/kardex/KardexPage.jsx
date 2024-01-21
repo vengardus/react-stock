@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { useUserStore } from "../../store/UserStore"
 import { useCompanyStore } from "../../store/CompanyStore"
-import { useModuleStore } from "../../store/ModuleStore"
 import { Error } from "../../components/moleculas/Error"
 import { SpinnerLoader } from "../../components/moleculas/SpinnerLoader"
 import { KardexTemplate } from "../../components/templates/kardex/KardexTemplate"
@@ -13,8 +11,9 @@ export const KardexPage = () => {
     const company = useCompanyStore((state) => state.data)
     const dataKardex = useKardexStore((state) => state.data)
     const getAllKardex = useKardexStore((state) => state.getAll)
+    const filterKardex = useKardexStore((state) => state.filter)
+    const strSearchKardex = useKardexStore((state) => state.strSearch)
 
-    const dataProduct = useProductStore((state) => state.data)
     const getAllProduct = useProductStore((state) => state.getAll)
     const filterProduct = useProductStore((state) => state.filter)
     const strSearchProduct = useProductStore((state) => state.strSearch)
@@ -48,23 +47,17 @@ export const KardexPage = () => {
         enabled: company?.id != null
     })
 
-    // useQuery({
-    //     queryKey: ['filterUsers', company?.id, strSearch],
-    //     queryFn: () => filter({
-    //         p_id_company: company.id,
-    //         p_str_search: strSearch
-    //     }),
-    //     enabled: company?.id != null
-    // })
-
-    // useQuery({
-    //     queryKey: ['getAllModules'],
-    //     queryFn: () => getAllModule()
-    // })
-    
+    useQuery({
+        queryKey: ['filterKardex', company?.id, strSearchKardex],
+        queryFn: () => filterKardex({
+            p_id_company: company.id,
+            p_str_search: strSearchKardex
+        }),
+        enabled: company?.id != null
+    })
+  
     if (queryUser.isLoading) return <SpinnerLoader />
     if (queryUser.isError) return <Error />
-
 
     return (
         <KardexTemplate data={dataKardex} />

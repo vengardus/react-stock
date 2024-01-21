@@ -12,7 +12,6 @@ export const useProductStore = create((set) => ({
     },
 
     getAll: async (p) => {
-        console.log('parm', p)
         const oModel = new ProductModel()
         const data = await oModel.getAll(p)
         set({ data: data })
@@ -22,12 +21,10 @@ export const useProductStore = create((set) => ({
     },
 
     selectProduct: (p) => {
-        console.log('selectProduct')
         set({ itemSelect: p })
     },
 
     insert: async (p) => {
-        console.log(p)
         const oModel = new ProductModel()
         const ok = await oModel.insert(p)
         if ( ok  )
@@ -40,7 +37,6 @@ export const useProductStore = create((set) => ({
     delete: async (p) => {
         const oModel = new ProductModel()
         const ok = await oModel.delete(p)
-        console.log('store.delete', ok)
         if (ok)
             set((state) => ({
                 data: state.getAll(state.parameters)

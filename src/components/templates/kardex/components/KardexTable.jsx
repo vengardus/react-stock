@@ -1,4 +1,6 @@
+import styled from "styled-components"
 import { useUserStore } from "../../../../store/UserStore"
+import { Device } from "../../../../styles/breakpoints"
 import { APP_CONFIG } from "../../../../utils/dataEstatica"
 import { modalAlert } from "../../../../utils/modalAlert"
 import { ContentActionsTable } from "../../../organismos/table/ContentActionsTable"
@@ -18,7 +20,7 @@ export const KardexTable = ({
         }
         actionRegister(APP_CONFIG.actionCrud.update, item)
     }
-    
+
     const deleteItem = (item) => {
         if (item.type_user.trim() == APP_CONFIG.type_user.admin) {
             modalAlert({ type: 'warning', text: 'No se puede eliminar usuario admin.' })
@@ -34,7 +36,7 @@ export const KardexTable = ({
                 }
             });
     }
-    
+
     const tableColumns = [
         {
             accessorKey: "date",
@@ -47,6 +49,17 @@ export const KardexTable = ({
             cell: (info) => <span>{info.getValue()}</span>
         },
         {
+            accessorKey: "type",
+            header: "Tipo",
+            cell: (info) =>
+                <Colorcontent
+                    $color={info.getValue() == APP_CONFIG.movementType.outgoing
+                        ? "#ed4d4d" : "#30c85b"}
+                >
+                    {info.getValue().toUpperCase()}
+                </Colorcontent>
+        },
+        {
             accessorKey: "quantity",
             header: "Cant",
             cell: (info) => <span>{info.getValue()}</span>
@@ -54,6 +67,11 @@ export const KardexTable = ({
         {
             accessorKey: "detail",
             header: "Detalle",
+            cell: (info) => <span>{info.getValue()}</span>
+        },
+        {
+            accessorKey: "product_stock",
+            header: "Stock",
             cell: (info) => <span>{info.getValue()}</span>
         },
         {
@@ -66,7 +84,7 @@ export const KardexTable = ({
             />
         },
     ]
-    
+
 
     return (
         <TableGeneric
@@ -76,3 +94,16 @@ export const KardexTable = ({
         />
     )
 }
+
+const Colorcontent = styled.div`
+  color: ${(props) => props.$color};
+  border-radius: 8px;
+  border:1px dashed ${(props) => props.$color};
+  text-align: center;
+  padding:3px;
+  width:70%;
+  font-weight:700;
+  @media ${Device.tablet} {
+    width:100%;
+  }
+`
