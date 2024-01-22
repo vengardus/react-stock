@@ -26,19 +26,19 @@ export const KardexTabs = ({ data }) => {
                     onClick={() => handleClick(1)}
                 >
                     {<v.iconopie />}
-                    Ttile 2
+                    Otros
                 </li>
                 <span className="glider"></span>
             </ul>
 
-            <div className="tab-content">
+            <div className="tab-content mb-2 px-2">
                 {activeTab === 0 &&
                     <KardexTable
                         data={data ?? []}
                         actionRegister={actionRegister}
                     />
                 }
-                {activeTab === 1 && <span>TAB2</span>}
+                {activeTab === 1 && <span>Información otros</span>}
             </div>
         </Container>
     )

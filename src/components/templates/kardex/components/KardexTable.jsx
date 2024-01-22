@@ -1,35 +1,36 @@
 import styled from "styled-components"
-import { useUserStore } from "../../../../store/UserStore"
 import { Device } from "../../../../styles/breakpoints"
 import { APP_CONFIG } from "../../../../utils/dataEstatica"
 import { modalAlert } from "../../../../utils/modalAlert"
 import { ContentActionsTable } from "../../../organismos/table/ContentActionsTable"
 import { TableGeneric } from "../../../organismos/table/TableGeneric"
+import { useKardexStore } from "../../../../store/KardexStore"
 
 
 export const KardexTable = ({
     data,
     actionRegister,
 }) => {
-    const deleteUser = useUserStore((state) => state.delete)
+    const deleteKardex = useKardexStore((state) => state.delete)
 
     const editItem = (item) => {
-        if (item.type_user.trim() == APP_CONFIG.type_user.admin) {
-            modalAlert({ type: 'warning', text: 'No se puede modificar usuario superadmin.' })
-            return
-        }
-        actionRegister(APP_CONFIG.actionCrud.update, item)
+        item
+        // if (item.type_user.trim() == APP_CONFIG.type_user.admin) {
+        modalAlert({ type: 'warning', text: 'No se puede modificar movimiento.' })
+        //     return
+        // }
+        // actionRegister(APP_CONFIG.actionCrud.update, item)
     }
 
     const deleteItem = (item) => {
-        if (item.type_user.trim() == APP_CONFIG.type_user.admin) {
-            modalAlert({ type: 'warning', text: 'No se puede eliminar usuario admin.' })
+        if (item.state === 0) {
+            modalAlert({ type: 'warning', text: 'No se puede eliminar movimiento.' })
             return
         }
         modalAlert({ type: 'delete' })
             .then(async (result) => {
                 if (result.isConfirmed) {
-                    if (await deleteUser({ id: item.id }))
+                    if (await deleteKardex({ id: item.id }))
                         modalAlert({ type: 'infoTimer', text: 'Se eliminó registro.' })
                     else
                         modalAlert({ type: 'warning', text: 'Error al eliminar registro.' })
@@ -67,7 +68,8 @@ export const KardexTable = ({
         {
             accessorKey: "detail",
             header: "Detalle",
-            cell: (info) => <span>{info.getValue()}</span>
+            cell: (info) => <span className={!info.row.original.state ? 'text-red-500' : ''}>
+                {(info.row.original.state? '':'ANULADO: ') + info.getValue()}</span>
         },
         {
             accessorKey: "product_stock",

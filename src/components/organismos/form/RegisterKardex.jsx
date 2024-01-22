@@ -13,6 +13,7 @@ import { FormContainer } from "./formr.style";
 import { Searcher } from "../Searcher";
 import { useProductStore } from "../../../store/ProductStore";
 import { useKardexStore } from "../../../store/KardexStore";
+import { modalAlert } from "../../../utils/modalAlert";
 
 
 
@@ -42,6 +43,13 @@ export function RegisterKardex({
     } = useForm();
 
     const registerUser = async (data) => {
+        if ( ! itemSelectProduct ) {
+            modalAlert({
+                type: 'warning',
+                text: `Debe ingresar un producto.`
+            })
+            return
+        }
         if (action === APP_CONFIG.actionCrud.insert) {
             const p = {
                 date : new Date(),

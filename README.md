@@ -363,6 +363,7 @@ or replace function get_all_kardex_by_company (p_id_company int) returns table (
   type varchar,
   detail varchar,
   id_user bigint,
+  state smallint,
   product_description varchar,
   user_name varchar,
   product_stock numeric
@@ -377,6 +378,7 @@ BEGIN
         k.type,
         k.detail,
         k.id_user,
+        k.state,
         p.description as product_description,
         u.name as user_name,
         p.stock as product_stock
@@ -403,20 +405,33 @@ as $$
 declare stock_product numeric;
 begin
   if new.type = 'ingreso' then
-    update inv_products 
-    set stock = stock + new.quantity 
-    where id = new.id_product;
+    if new.state = 1 then
+      update inv_products 
+      set stock = stock + new.quantity 
+      where id = new.id_product;
+    else
+      update inv_products 
+      set stock = stock - new.quantity 
+      where id = new.id_product;
+    end if;
   else
     select into stock_product stock
     from inv_products 
     where id = new.id_product;
-
-    if stock_product > new.quantity then
-      update inv_products 
-      set stock = stock - new.quantity 
-      where id = new.id_product;
+    
+    /* es ingreso? */
+    if new.state = 1 then
+      if stock_product > new.quantity then
+        update inv_products 
+        set stock = stock - new.quantity 
+        where id = new.id_product;
+      else
+        raise exception 'Stock agotado para el producto!!!';
+      end if;
     else
-      raise exception 'Stock agotado para el producto!!!';
+        update inv_products 
+        set stock = stock + new.quantity 
+        where id = new.id_product;
     end if;
   end if;
 
@@ -444,6 +459,7 @@ or replace function get_filter_kardex_by_product (p_id_company int, , p_str_sear
   type varchar,
   detail varchar,
   id_user bigint,
+  state smallint,
   product_description varchar,
   user_name varchar,
   product_stock numeric
@@ -458,6 +474,7 @@ BEGIN
         k.type,
         k.detail,
         k.id_user,
+        k.state,
         p.description as product_description,
         u.name as user_name,
         p.stock as product_stock
