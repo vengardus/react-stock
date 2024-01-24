@@ -143,11 +143,11 @@ export const TableCategory = ({
                                 <tr key={item.id} className={`${(isStriped) ? 'tableStriped' : ''}`} >
                                     {
                                         item.getVisibleCells().map(cell => (
-                                            <thw key={cell.id} scope='row'>
+                                            <th key={cell.id} scope='row'>
                                                 {
                                                     flexRender(cell.column.columnDef.cell, cell.getContext())
                                                 }
-                                            </thw>
+                                            </th>
                                         ))
                                     }
                                 </tr>

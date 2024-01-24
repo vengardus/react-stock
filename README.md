@@ -527,6 +527,8 @@ select get_filter_kardex_by_product(9, 'tecla');
 
 - Iniciar sesión en firebase [https://firebase.google.com]
 
+- Ir a consola
+
 - Crear nuevo proyecto (paso 1-3): dar nombre al proyecto
 
 - Google analytics (Paso 2-3): deshabilitar analíticas
@@ -563,7 +565,7 @@ select get_filter_kardex_by_product(9, 'tecla');
   - Generar proyecto
   
   ```pwd
-    pnpm run buid
+    pnpm run build
   ```
   
   - Solución al warning:
@@ -603,7 +605,7 @@ select get_filter_kardex_by_product(9, 'tecla');
       firebase deploy
     ```
 
-  - Modificar:
+  - Modificar firebae.json
 
     ```pwd
       "hosting": {
