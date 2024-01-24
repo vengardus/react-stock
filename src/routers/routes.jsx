@@ -16,6 +16,7 @@ import { UserPage } from "../pages/user/UserPage"
 import { useUserStore } from "../store/UserStore"
 import { PageNotAuth } from "../components/moleculas/PageNotAuth.jsx"
 import { KardexPage } from "../pages/kardex/KardexPage.jsx"
+import { ReportPage } from "../pages/report/ReportPage.jsx"
 
 const isPermission = (module, permissions) => {
     return permissions.some(permission => permission.inv_modules.name === module)
@@ -53,6 +54,7 @@ export function MyRoutes() {
                             ? <UserPage /> : <ConfigPage />
                     } />
                 <Route path="/kardex" element={<KardexPage />} />
+                <Route path="/report" element={<ReportPage />} />
             </Route>
         </Routes>
 

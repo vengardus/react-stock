@@ -143,7 +143,7 @@ export const LinksArray = [
       {
         label: "Reportes",
         icon: TbReportAnalytics,
-        to: "/reportes",
+        to: "/report",
       },
 ];
 export const SecondarylinksArray = [

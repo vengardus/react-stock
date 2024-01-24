@@ -53,6 +53,8 @@ pnpm add -D tailwindcss postcss autoprefixer
 
 ## INSTALL 
 pnpm add @tanstack/react-table
+pnpm add @react-pdf/renderer --save
+
 
 ```
 
