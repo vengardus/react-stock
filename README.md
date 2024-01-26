@@ -399,7 +399,7 @@ END;
 $$ language plpgsql;
 ```
 
-  ```plpgsql: functiond and trigger update_stock  
+  ```plpgsql: function and trigger update_stock  
 create or replace function update_stock()
 returns trigger
 language plpgsql
@@ -420,8 +420,7 @@ begin
     select into stock_product stock
     from inv_products 
     where id = new.id_product;
-    
-    /* es ingreso? */
+
     if new.state = 1 then
       if stock_product > new.quantity then
         update inv_products 
@@ -497,6 +496,38 @@ $$ language plpgsql;
 
 /* test */
 select get_filter_kardex_by_product(9, 'tecla');
+```
+
+  ```plpgsql: function and trigger delete_kardex
+create or replace function delete_kardex()
+returns trigger
+language plpgsql
+as $$
+begin
+  insert into inv_kardex(date, type, id_user, id_product, quantity, id_company, detail, state)
+  values(now(), old.type, old.id_user, old.id_product, old.quantity, old.id_company, old.detail, 0);
+
+  /*
+  if old.type = 'ingreso' then
+    update inv_products
+    set stock = stock - new.quantity
+    where id = new.id_product;
+  else
+    update inv_products
+    set stock = stock - new.quantity
+    where id = new.id_product;
+  end if;
+  */
+  return old;
+end
+$$;
+
+
+create or replace trigger delete_kardex_trigger
+before delete on inv_kardex
+for each row
+execute function delete_kardex();
+
 ```
 
 ## Ayuda memoria

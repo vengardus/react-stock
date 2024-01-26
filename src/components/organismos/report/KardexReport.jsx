@@ -4,14 +4,15 @@ import {
     View,
     Document,
     StyleSheet,
-    Font
+    //    Font
 } from "@react-pdf/renderer"
+// import { useEffect } from "react";
 
 // Create styles
-Font.register({
-    family: "Inconsolata",
-    src: "http://fonts.gstatic.com/s/inconsolata/v15/7bMKuoy6Nh0ft0SHnIGMuaCWcynf_cDxXwCLxiixG1c.ttf",
-});
+// Font.register({
+//     family: "Inconsolata",
+//     src: "http://fonts.gstatic.com/s/inconsolata/v15/7bMKuoy6Nh0ft0SHnIGMuaCWcynf_cDxXwCLxiixG1c.ttf",
+// });
 
 const styles = StyleSheet.create({
     page: { flexDirection: "row" },
@@ -21,78 +22,85 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderBottom: 1,
         borderBottomColor: "#121212",
-        alignItems: "stretch",
+        //alignItems: "stretch",
         height: 24,
         borderLeftColor: "#000",
         borderLeft: 1,
         textAlign: "left",
         justifyContent: "flex-start",
-        //alignItems: 'center',
+        alignItems: 'center',
     },
     cell: {
         flex: 1,
         textAlign: "left",
-        fontFamily: "Inconsolata",
+        //fontFamily: "Inconsolata",
         borderLeftColor: "#000",
         justifyContent: "flex-start",
         alignItems: 'center',
     },
     headerCell: {
-        flex: 1, backgroundColor: "#dcdcdc", fontWeight: "bold", fontFamily: "Inconsolata", textAlign: "left", justifyContent: "flex-start",
+        flex: 1,
+        backgroundColor: "#dcdcdc",
+        fontWeight: "bold",
+        /*fontFamily: "Inconsolata",*/
+        textAlign: "left",
+        justifyContent: "flex-start",
         alignItems: 'center',
     },
 });
 
-export const KardexReport = () => {
+
+export const KardexReport = ({ data }) => {
     const currentDate = new Date()
     const formatedDate = `${currentDate.toLocaleDateString()} ${currentDate.toLocaleTimeString()}`
+
 
     const renderTableRow = (rowData, isHeader = false) => {
         return (
             <View style={styles.row} key={rowData.id}>
                 <Text style={[styles.cell, isHeader && styles.headerCell]}>
-                    {rowData.fecha}
+                    {rowData.date}
                 </Text>
                 <Text style={[styles.cell, isHeader && styles.headerCell]}>
-                    {rowData.descripcion}
+                    {rowData.product_description}
                 </Text>
                 <Text style={[styles.cell, isHeader && styles.headerCell]}>
-                    {rowData.detalle}
+                    {rowData.detail}
                 </Text>
                 <Text style={[styles.cell, isHeader && styles.headerCell]}>
-                    {rowData.cantidad}
+                    {rowData.quantity}
                 </Text>
             </View>
         )
     }
 
+
     return (
         <Document title="Reporte Kardex">
-            <Page size="A4" style={styles.page} orientation="landscape">
-                <View style={styles.section}>
-                    <View>
-                        <Text>Movimeintos de Kardex</Text>
+            <Page size="A4" /*style={styles.page}*/ orientation="landscape">
+                <View style={styles.page}>
+                    <View style={styles.section}>
+                        <Text
+                            style={{ fontSize: 18, marginBottom: 10}}
+                        >Movimientos de Kardex</Text>
                         <Text>Fecha y hora de impresión: {formatedDate}</Text>
+                        <View style={styles.table}>
+                            {renderTableRow(
+                                {
+                                    id: 0,
+                                    date: "Fecha",
+                                    product_description: "Producto ",
+                                    detail: "Movimiento ",
+                                    quantity: "Cantidad",
+                                },
+                                true
+                            )}
+                        
+                            {
+                                data?.map(movement => renderTableRow(movement))
+                            }
+                        </View>
                     </View>
-                    {renderTableRow(
-                        {
-                            id: 1,
-                            fecha: "Fecha",
-                            descripcion: "Producto",
-                            detalle: "Movimiento",
-                            cantidad: "Cantidad",
-                        },
-                        true
-                    )}
-                    {renderTableRow(
-                        {
-                            id: 1,
-                            fecha: "Fecha",
-                            descripcion: "Producto",
-                            detalle: "Movimiento",
-                            cantidad: "Cantidad",
-                        }
-                    )}
                 </View>
             </Page>
         </Document>

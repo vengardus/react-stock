@@ -82,7 +82,13 @@ export function RegisterUser({
                 password: data.password
             }
 
-            await insertUser(pUser, pAuth, dataCompany.id, checkboxes)
+            if ( ! await insertUser(pUser, pAuth, dataCompany.id, checkboxes) ) {
+                modalAlert({
+                    type: 'warning',
+                    text: `Usuario ya existe!!!.`
+                })
+                return
+            }
             onClose();
         }
     }

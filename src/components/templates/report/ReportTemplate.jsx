@@ -2,7 +2,7 @@ import { KardexReport } from "../../organismos/report/KardexReport"
 import { TemplateBaseHeader } from "../_base/TemplateBaseHeader"
 import {PDFViewer} from "@react-pdf/renderer"
 
-export const ReportTemplate = () => {
+export const ReportTemplate = ({data}) => {
 
     return (
         <div className="containerTemplate">
@@ -12,14 +12,15 @@ export const ReportTemplate = () => {
                 Reports
             </section>
 
-            <section id="section2" className="h-screen">
+            <section id="section2" className="h-screen bg-red-400">
                 <PDFViewer width={'100%'} height={'100%'}>
-                    <KardexReport />
+                    <KardexReport data={data}/>
                 </PDFViewer>
             </section>
 
-            {/* <section className="">
-            </section> */}
+            <section className="">
+                Hola
+            </section> 
         </div>
     )
 }

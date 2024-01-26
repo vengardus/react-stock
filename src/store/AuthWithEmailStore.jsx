@@ -8,7 +8,6 @@ export const useAuthWithEmailStore = create((set) => ({
 
     signInWithEmail: async (p) => {
         try {
-            console.log('p:', p)
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: p.email,
                 password: p.password

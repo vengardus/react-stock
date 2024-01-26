@@ -28,7 +28,6 @@ export function LoginTemplate() {
     } = useForm();
 
     async function iniciar(data) {
-      console.log(data)
         const response = await signInWithEmail({
             email: data.email,
             password: data.password,
