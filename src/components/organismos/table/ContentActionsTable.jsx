@@ -6,7 +6,7 @@ export const ContentActionsTable = ({
     funcDelete
 }) => {
   return (
-    <div className="flex gap-3 pl-4">
+    <div className="flex gap-2 pl-0 md:gap-3 md:pl-4">
         <ActionTable 
             func={funcEdit}
             color={'#ee44ee'}

@@ -13,6 +13,8 @@ export const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  
+
 
   .sub-contenedor {
     width: 85%;
@@ -22,7 +24,7 @@ export const FormContainer = styled.div`
     box-shadow: -10px 15px 30px rgba(10, 9, 9, 0.4);
     padding: 13px 36px 20px 36px;
     z-index: 100;
-
+    
     .headers {
       display: flex;
       justify-content: space-between;
@@ -44,8 +46,12 @@ export const FormContainer = styled.div`
     .formulario {
         display: grid;
         grid-template-columns: 1 1fr;
+        height: calc(400px);
+        overflow-y: scroll;
+
         @media ${Device.tablet} {
             display: grid;
+            height: 100%;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
             .btnguardarContent {

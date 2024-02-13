@@ -84,7 +84,7 @@ export function RegisterKardex({
                     </section>
                     <section>
                         <h1>
-                            {action == APP_CONFIG.actionCrud.update ? "Editar usuario" : "Registrar nueva usuario"}
+                            {action == APP_CONFIG.actionCrud.update ? "Editar movimiento" : "Registrar"}
                         </h1>
                     </section>
 

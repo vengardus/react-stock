@@ -119,7 +119,7 @@ export function RegisterUser({
                     </section>
                 </div>
 
-                <form className="formulario" onSubmit={handleSubmit(registerUser)}>
+                <form className="formulario overflow-y-scroll" onSubmit={handleSubmit(registerUser)}>
                     <section>
                         {/* email */}
                         <article>

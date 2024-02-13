@@ -53,6 +53,6 @@ export const ProductPage = () => {
   if (queryProduct.isError) return <Error />
 
   return (
-    <ProductTemplate products={dataProduct?? []} />
+    <ProductTemplate data={dataProduct?? []} />
   )
 }

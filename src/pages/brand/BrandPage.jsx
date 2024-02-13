@@ -33,6 +33,6 @@ export const BrandPage = () => {
   if (queryBrand.isError) return <Error />
 
   return (
-    <BrandTemplate brands={dataBrand} />
+    <BrandTemplate data={dataBrand} />
   )
 }

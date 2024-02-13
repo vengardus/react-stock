@@ -1,67 +1,41 @@
-import { useState } from "react"
-import { Header } from "../../organismos/Header"
-import { TableBrand } from "../../organismos/table/TableBrand"
 import { RegisterBrand } from "../../organismos/form/RegisterBrand"
-import { ContentFilter } from "../../atomos/ContentFilter"
-import { BtnFilter } from "../../moleculas/BtnFilter"
-import { v } from "../../../styles/variables"
-import { Searcher } from "../../organismos/Searcher"
-import { useBrandStore } from "../../../store/BrandStore"
+import { TemplateBaseHeader } from "../_base/TemplateBaseHeader"
+import { TemplateBaseSectionTitle } from "../_base/TemplateBaseSectionTitle"
+import { Search } from "./components/Search"
+import { Table } from "./components/Table"
+import { useActionRegister } from "../_base/utils/useActionRegister"
 
 const title = 'Marcas'
 
 export const BrandTemplate = ({
-    brands
+    data
 }) => {
-    const [state, setState] = useState(false)
-    const [dataSelect, setDataSelect] = useState([])
-    const [action, setAction] = useState("")
-    const [openRegister, setOpenRegister] = useState(false)
-    const setStrSearch = useBrandStore((state) => state.setStrSearch)
+    const {
+        action, openRegister, dataSelect,
+        actionRegister, setOpenRegister
+    } = useActionRegister(data)
 
-    const actionRegister = (action, data = []) => {
-        setAction(action)
-        setDataSelect(data)
-        setOpenRegister(!openRegister)
-    }
 
     return (
         <div className="containerTemplate">
-            <header className="flex align-middle h-[70px]">
-                <Header
-                    stateConfig={{
-                        state: state,
-                        setState: () => setState(!state)
-                    }}
-                />
-            </header>
+            <TemplateBaseHeader />
 
-            <section id="sectionTitle" className="">
-                <ContentFilter >
-                    <div className="title">{title}</div>
-                    <BtnFilter
-                        bgColor={'#f6f3f3'}
-                        textColor={'#353535'}
-                        icon={<v.agregar />}
-                        func={(action, data) => actionRegister(action, data)}
-                    />
-                </ContentFilter>
-            </section>
+            <TemplateBaseSectionTitle
+                title={title}
+                // actionRegister={() => actionRegister()}
+                actionRegister={({ action, data }) => actionRegister({ action, data })}
+            />
 
-            <section className="sectionSearcher flex justify-end  ">
-                <Searcher 
-                    setSearcher={setStrSearch}
-                />
-            </section>
+            <Search />
 
             <section id="sectionTable" className="px-2 flex flex-col gap-y-3">
-                <TableBrand
-                    data={brands ?? []}
-                    actionRegister={(action, data) => actionRegister(action, data)}
+                <Table
+                    data={data ?? []}
+                    actionRegister={actionRegister}
                 />
             </section>
 
-            <section className="">
+            <section id="sectionRegister" className="">
                 {
                     openRegister && <RegisterBrand
                         dataSelect={dataSelect}
@@ -71,6 +45,7 @@ export const BrandTemplate = ({
                 }
 
             </section>
+
         </div>
     )
 }

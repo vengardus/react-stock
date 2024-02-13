@@ -26,6 +26,7 @@ import { Pagination } from "./Pagination"
 export const TableGeneric = ({
 	data,
 	columns,
+	customColumns,
 	isStriped = true
 }) => {
 
@@ -50,10 +51,10 @@ export const TableGeneric = ({
 					<thead>
 						{
 							table.getHeaderGroups().map(headerGroup => (
-								<tr key={headerGroup.id}>
+								<tr key={headerGroup.id} className="flex">
 									{
-										headerGroup.headers.map(header => (
-											<th key={header.id} className="">
+										headerGroup.headers.map((header, index) => (
+											<th key={header.id}  className={`${customColumns[index].responsive}`}>
 												<span className="flex">
 													{header.column.columnDef.header}
 													{header.column.getCanSort() && (
@@ -81,10 +82,10 @@ export const TableGeneric = ({
 					<tbody>
 						{
 							table.getRowModel().rows.map(item => (
-								<tr key={item.id} className={`${(isStriped) ? 'tableStriped' : ''}`} >
+								<tr key={item.id} className={`${(isStriped) ? 'tableStriped' : ''} flex`} >
 									{
-										item.getVisibleCells().map(cell => (
-											<th key={cell.id} scope='row'>
+										item.getVisibleCells().map((cell, index) => (
+											<th key={cell.id} scope='row'  className={`${customColumns[index].responsive} w-1/12`}>
 												{
 													flexRender(cell.column.columnDef.cell, cell.getContext())
 												}

@@ -25,7 +25,7 @@ export const UserTemplate = ({ data }) => {
 
             <UserSearch />
 
-            <section id="sectionTable" className="px-2 flex flex-col gap-y-3">
+            <section id="sectionTable" className="px-0 md:px-2 flex flex-col gap-y-3">
                 <UserTable
                     data={data ?? []}
                     actionRegister={actionRegister}

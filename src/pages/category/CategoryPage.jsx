@@ -33,6 +33,6 @@ export const CategoryPage = () => {
   if (queryCategory.isError) return <Error />
 
   return (
-    <CategoryTemplate categories={dataCategory} />
+    <CategoryTemplate data={dataCategory} />
   )
 }

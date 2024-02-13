@@ -8,8 +8,8 @@ export const Container = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    border: 1px solid #6a6b6c;
-    border-radius: 15px;
+    /*border: 1px solid #6a6b6c;*/
+    /*border-radius: 15px;*/
     height: 100%;
     .tabs {
         list-style: none;
